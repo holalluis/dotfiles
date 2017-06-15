@@ -1,7 +1,2 @@
-# vimrc
-
-* CAT
-arxiu vimrc per diferents ordinadors que faig servir per treballar
-
-* ENG
-vimrc file for different machines I use to work
+# vimrc file (configuration/preferences) for vim
+Arxiu vimrc (configuració/preferències) pel vim
