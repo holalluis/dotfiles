@@ -74,11 +74,11 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-"buscar centrant
-nmap N Nzz
-nmap n nzz
-nmap * *zz
-nmap * *zz
+"BUSCAR CENTRANT:
+nnoremap N Nzz
+nnoremap n nzz
+nnoremap * *zz
+nnoremap # #zz
 
 "moure's sense tenir en compte el line wrapping
 nnoremap j gj
