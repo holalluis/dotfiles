@@ -10,15 +10,15 @@ colorscheme default
 
 "INDENTING AND FOLDING:
 set autoindent
-set foldcolumn=1         "valors: 0 a 12, informacio lateral sobre folds
-"set tabstop=2           "width of tab character
-"set shiftwidth=2        "number of space character to use for indent
-"set softtabstop=2       "?
-"set shiftround          "use multiple of shiftwidth when indenting with '<' and '>'
-set foldmethod=indent    "manera de plegar text
-"set foldmethod=manual    "manera de plegar text
-set nofoldenable       "inicialment folds oberts
-"set foldlevel=10      "inicialment folds oberts
+set foldcolumn=1        "valors: 0 a 12, informacio lateral sobre folds
+set tabstop=2           "width of tab character
+set shiftwidth=2        "number of space character to use for indent
+set softtabstop=2       "?
+set shiftround          "use multiple of shiftwidth when indenting with '<' and '>'
+set foldmethod=indent   "manera de plegar text
+set foldlevel=10        "inicialment folds oberts
+"set foldmethod=manual   "manera de plegar text
+"set nofoldenable        "inicialment folds oberts
 
 "ignora caràcter '#' per folding, plega'l correctament
 set foldignore=
