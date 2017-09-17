@@ -10,7 +10,7 @@ colorscheme default
 
 "INDENTING AND FOLDING:
 set autoindent
-set foldcolumn=1        "valors: 0 a 12, informacio lateral sobre folds
+"set foldcolumn=1        "valors: 0 a 12, informacio lateral sobre folds
 set tabstop=2           "width of tab character
 set shiftwidth=2        "number of space character to use for indent
 set softtabstop=2       "?
@@ -20,6 +20,7 @@ set foldlevel=10        "inicialment folds oberts
 "set foldmethod=manual   "manera de plegar text
 "set nofoldenable        "inicialment folds oberts
 
+"IGNORA:
 "ignora caràcter '#' per folding, plega'l correctament
 set foldignore=
 
@@ -90,5 +91,6 @@ cmap WQ wq
 cmap Q q
 
 "modeline/modelines
-set modeline
 set modelines=5
+
+"hex editing TODO
