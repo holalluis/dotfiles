@@ -1,6 +1,9 @@
 "VIMRC VIM 8.0 - MACBOOK AIR 10.11.6
 "bash tip: alias vimrc='vim ~/vimrc/vimrc'
 
+"provant:
+set laststatus=2
+
 "enter the current millenium (github/mcantor)
 set nocompatible
 
