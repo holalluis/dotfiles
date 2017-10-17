@@ -5,7 +5,7 @@
 "hex editing
 
 "PROVANT:
-set laststatus=2
+set laststatus=1
 
 "PLUGINS:
 "set runtimepath^=~/.vim/bundle/vim-fugitive
