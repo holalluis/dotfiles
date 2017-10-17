@@ -61,7 +61,7 @@ nmap , :tabnext<cr>
 "reset syntax colors
 nmap <f10> :syntax sync fromstart<CR>
 "obrir tag (ctags) o link a help (visual studio style)
-nmap <f12> <C-]> 
+nmap <f12> <C-]>
 "enrere
 nmap <f11> <C-T>
 "alternate register for Mac OS X
@@ -103,4 +103,3 @@ cmap Q q
 
 "modeline/modelines
 set modelines=5
-
