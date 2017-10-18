@@ -1,14 +1,14 @@
 "VIMRC VIM 8.0 - MACBOOK AIR 10.11.6
 "bash tip: alias vimrc='vim ~/vimrc/vimrc'
 
-"PER PROVAR: TODO
+"PER PROVAR:
 "hex editing
 
 "PROVANT:
 set laststatus=1
 
 "PLUGINS:
-"set runtimepath^=~/.vim/bundle/vim-fugitive
+set runtimepath^=~/.vim/bundle/vim-fugitive
 "set runtimepath^=~/.vim/bundle/vim-sql-workbench
 
 "DESCARTATS:
