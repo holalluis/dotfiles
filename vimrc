@@ -3,6 +3,7 @@
 
 "PER PROVAR:
 "hex editing
+"prova per fer Gcommit
 
 "PROVANT:
 set laststatus=1
