@@ -1,10 +1,18 @@
 "VIMRC VIM 8.0 - MACBOOK AIR 10.11.6
-"bash tip: alias vimrc='vim ~/vimrc/vimrc'
+"alias vimrc='vim ~/vimrc/vimrc'
 
-"PER PROVAR:
-"hex editing
+"ZONA DE PROVES:
+"buscar a google la paraula sota el cursor
+fun! Google()
+	let keyword = expand("<cword>")
+	let url = "http://www.google.com/search?q=" . keyword
+	echo url
+	silent exec "!open '".url."'" | redraw!
+endfun
+nmap gs :call Google()<CR>
 
 "PROVANT:
+"set cursorline
 set laststatus=1
 
 "PLUGINS:
@@ -23,7 +31,7 @@ set runtimepath^=~/.vim/bundle/vim-fugitive
 
 "CONFIRMATS: (des d'aquí fins al final)
 
-"enter the current millenium (github/mcantor)
+"enter the current millenium (github/mcantor) (?)
 set nocompatible
 
 "COLORS:
@@ -32,15 +40,18 @@ colorscheme default
 
 "INDENTING AND FOLDING:
 set autoindent
-set tabstop=2           "width of tab character
-set shiftwidth=2        "number of space character to use for indent
-set softtabstop=2       "?
-set shiftround          "use multiple of shiftwidth when indenting with '<' and '>'
 set foldmethod=indent   "manera de plegar text
 set foldlevel=10        "inicialment folds oberts
 
+"TABS:
+set expandtab           "insert spaces instead of tab
+set tabstop=2           "width of tab character
+set shiftwidth=2        "number of space character to use for indent
+set shiftround          "use multiple of shiftwidth when indenting with '<' and '>'
+
+
 "IGNORA:
-"ignora caràcter '#' per folding, plega'l correctament
+"ignora caràcter '#' per folding, plega'l correctament (per CSS)
 set foldignore=
 
 "FINDING FILES:
@@ -66,13 +77,14 @@ nmap <f12> <C-]>
 nmap <f11> <C-T>
 "alternate register for Mac OS X
 nmap <C-E> :e#<CR>
+nmap <CR><CR> :e#<CR>
 "escape rapid a normal mode
 inoremap kj <Esc>
 "moure's per finestres amb <espai>
 nmap <space> <C-w>w
 "paste amb indent
 map p ]p
-set nrformats=bin,hex           "ctrl-a suma numeros decimals
+set nrformats=hex           "ctrl-a suma numeros decimals
 set clipboard=unnamed           "system clipboard
 set history=100
 set nowrap                      "les linies que surten de la pantalla no es veuen
