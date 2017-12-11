@@ -1,24 +1,6 @@
 "VIMRC VIM 8.0 - MACBOOK AIR 10.11.6
 "alias vimrc='vim ~/vimrc/vimrc'
 
-"ZONA DE PROVES:
-"buscar a google la paraula sota el cursor
-fun! Google()
-	let keyword = expand("<cword>")
-	let url = "http://www.google.com/search?q=" . keyword
-	echo url
-	silent exec "!open '".url."'" | redraw!
-endfun
-nmap gs :call Google()<CR>
-
-"PROVANT:
-"set cursorline
-set laststatus=1
-
-"PLUGINS:
-set runtimepath^=~/.vim/bundle/vim-fugitive
-"set runtimepath^=~/.vim/bundle/vim-sql-workbench
-
 "DESCARTATS:
 "set autochdir           "canviar pwd automaticament
 "set foldcolumn=1        "valors: 0 a 12, informacio lateral sobre folds
@@ -28,15 +10,31 @@ set runtimepath^=~/.vim/bundle/vim-fugitive
 "let g:netrw_altv=1          " open splits to the right
 "set ruler                   "show position always (no m'agrada)
 "set hidden                  "navega per finestres sense haver de guardar canvis (no m'agrada)
+"set cursorline
+
+"PROVANT:
+"PLUGINS:
+execute pathogen#infect()
+
+"plugin vimorganizer
+au! BufRead,BufWrite,BufWritePost,BufNewFile *.org 
+au BufEnter *.org filetype plugin indent on
+au BufEnter *.org call org#SetOrgFileType()
+au BufEnter *.org hi Folded ctermbg=0 ctermfg=3
+command! OrgCapture :call org#CaptureBuffer()
+command! OrgCaptureFile :call org#OpenCaptureFile()
+
+"plugin vimwiki (per taules en format text)
+filetype plugin on
 
 "CONFIRMATS: (des d'aquí fins al final)
-
-"enter the current millenium (github/mcantor) (?)
+set relativenumber
+set laststatus=1 "veure titol finestra si n'hi ha més d'una oberta
 set nocompatible
+syntax on
 
 "COLORS:
-syntax on
-colorscheme default
+"colorscheme default
 
 "INDENTING AND FOLDING:
 set autoindent
@@ -49,16 +47,13 @@ set tabstop=2           "width of tab character
 set shiftwidth=2        "number of space character to use for indent
 set shiftround          "use multiple of shiftwidth when indenting with '<' and '>'
 
-
 "IGNORA:
-"ignora caràcter '#' per folding, plega'l correctament (per CSS)
+"ignora caràcter '#' per folding, plega'l correctament (útil per CSS)
 set foldignore=
 
 "FINDING FILES:
-"(** searches subdirectories)
-set path+=**
-"display all matching files in tab complete
-set wildmenu
+set path+=**    "(** searches subdirectories)
+set wildmenu    "display all matching files in tab complete
 
 "FILE BROWSING:
 let g:netrw_banner=0        " disable annoying banner
@@ -71,13 +66,12 @@ let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 nmap , :tabnext<cr>
 "reset syntax colors
 nmap <f10> :syntax sync fromstart<CR>
-"obrir tag (ctags) o link a help (visual studio style)
+"obrir tag (ctags) o link a help (~"go to definition" visual studio style)
 nmap <f12> <C-]>
-"enrere
+"back from a jump
 nmap <f11> <C-T>
 "alternate register for Mac OS X
 nmap <C-E> :e#<CR>
-nmap <CR><CR> :e#<CR>
 "escape rapid a normal mode
 inoremap kj <Esc>
 "moure's per finestres amb <espai>
