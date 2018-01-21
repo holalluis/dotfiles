@@ -26,7 +26,6 @@ match ErrorMsg '\s\+$'
 
 "PLUGINS:
 "execute pathogen#infect()
-
 "desactivar auto comentaris
 "autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
@@ -59,10 +58,8 @@ set path+=**    "(** searches subdirectories)
 set wildmenu    "display all matching files in tab complete
 
 "FILE BROWSING:
-let g:netrw_banner=0        " disable annoying banner
-let g:netrw_liststyle=3     " tree view
-"let g:netrw_list_hide=netrw_gitignore#Hide()
-"let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_banner=0    "disable annoying banner
+let g:netrw_liststyle=3 "tree view
 
 "MISC:
 "següent pestanya
@@ -79,7 +76,7 @@ nmap <C-E> :e#<CR>
 inoremap kj <Esc>
 "moure's per finestres amb <espai>
 nmap <space> <C-w>w
-"paste amb indent
+"paste amb autoindent
 map p ]p
 
 set nrformats=hex               "ctrl-a suma numeros decimals
@@ -111,5 +108,5 @@ cmap Wq wq
 cmap WQ wq
 cmap Q q
 
-"modeline/modelines
+"modeline/modelines (:help modeline)
 set modelines=5
