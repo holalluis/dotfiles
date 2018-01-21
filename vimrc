@@ -1,7 +1,7 @@
 "VIMRC VIM 8.0 - MACBOOK AIR 10.11.6
 "alias vimrc='vim ~/vimrc/vimrc'
 
-"DESCARTATS:
+"PROVATS I DESCARTATS:
 "set autochdir           "canviar pwd automaticament
 "set foldcolumn=1        "valors: 0 a 12, informacio lateral sobre folds
 "set foldmethod=manual   "manera de plegar text
@@ -10,25 +10,28 @@
 "let g:netrw_altv=1          " open splits to the right
 "set ruler                   "show position always (no m'agrada)
 "set hidden                  "navega per finestres sense haver de guardar canvis (no m'agrada)
-"set cursorline
+"set cursorline   "ilumina linia del cursor
+"set cursorcolumn "ilumina columna del cursor
+"auto reload vimrc (bug: es torna lent)
+"autocmd bufwritepost vimrc source $MYVIMRC
 
-"PROVANT:
+"INTERMITENTS: (s'obren i es tanquen)
+"set list "see invisible characters
+
+"PROVAR:
+"troba línies de més de 120 caràcters
+match ErrorMsg '\%>120v.\+'
+"troba trailing whitespaces
+match ErrorMsg '\s\+$'
+
 "PLUGINS:
-execute pathogen#infect()
+"execute pathogen#infect()
 
-"plugin vimorganizer
-au! BufRead,BufWrite,BufWritePost,BufNewFile *.org 
-au BufEnter *.org filetype plugin indent on
-au BufEnter *.org call org#SetOrgFileType()
-au BufEnter *.org hi Folded ctermbg=0 ctermfg=3
-command! OrgCapture :call org#CaptureBuffer()
-command! OrgCaptureFile :call org#OpenCaptureFile()
+"desactivar auto comentaris
+"autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-"plugin vimwiki (per taules en format text)
-filetype plugin on
-
-"CONFIRMATS: (des d'aquí fins al final)
-set relativenumber
+"PROVATS CONFIRMATS: (des d'aquí fins al final)
+"set relativenumber
 set laststatus=1 "veure titol finestra si n'hi ha més d'una oberta
 set nocompatible
 syntax on
@@ -58,8 +61,8 @@ set wildmenu    "display all matching files in tab complete
 "FILE BROWSING:
 let g:netrw_banner=0        " disable annoying banner
 let g:netrw_liststyle=3     " tree view
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+"let g:netrw_list_hide=netrw_gitignore#Hide()
+"let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
 "MISC:
 "següent pestanya
@@ -78,7 +81,8 @@ inoremap kj <Esc>
 nmap <space> <C-w>w
 "paste amb indent
 map p ]p
-set nrformats=hex           "ctrl-a suma numeros decimals
+
+set nrformats=hex               "ctrl-a suma numeros decimals
 set clipboard=unnamed           "system clipboard
 set history=100
 set nowrap                      "les linies que surten de la pantalla no es veuen
