@@ -1,31 +1,44 @@
 "VIMRC holalluis
 "useful bash alias: vimrc='vim ~/vimrc/vimrc'
 
-"PLUGINS:
-"execute pathogen#infect()
-"desactivar auto comentaris
-"autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+"ZONA DE PROVES:
+"vertical terminal
+:command Vter :vertical terminal
 
-"DESACTIVATS: (estan al principi per evitar reactivar-los)
-"edit alternate buffer (CTRL-^)
-"nnoremap <C-e> :e#<CR>
+"alternate buffer
+nnoremap ,a :e#<CR>
+"següent pestanya
+nmap ,m :tabnext<cr>
+nmap ,n :tabprev<cr>
+
+"PROVATS I DESACTIVATS: (estan al principi per evitar reactivar-los)
+"set textwidth=80            "set text width
+"set colorcolumn=+1          "set color column
+"nnoremap <C-e> :e#<CR>      "edit alternate buffer (CTRL-^)
 "set autochdir               "canviar pwd automaticament
 "set foldcolumn=1            "valors: 0 a 12, informacio lateral sobre folds
 "set foldmethod=manual       "manera de plegar text
 "set nofoldenable            "inicialment folds oberts
 "set hidden                  "navega per finestres sense haver de guardar canvis (no m'agrada)
-"set cursorline              "ilumina linia del cursor
-"set cursorcolumn            "ilumina columna del cursor
 "let g:netrw_browse_split=4  " open in prior window
 "let g:netrw_altv=1          " open splits to the right
+set nocursorline              "ilumina linia del cursor
+set nocursorcolumn            "ilumina columna del cursor
 set nolist                   "see invisible characters
 set noruler                  "show position always (no m'agrada)
 set norelativenumber         "no relative number for line number
-set hlsearch
+set nohlsearch
 "autocmd bufwritepost vimrc source $MYVIMRC "auto reload vimrc (no funciona)
 "--------------------------------------------------------------
 
-"edit ~/vimrc/vimrc with ':Vimrc'
+"PROVATS CONFIRMATS: (des d'aquí fins al final)
+"----------------------------------------------
+syntax on
+set nocompatible
+set mouse=a
+set laststatus=1 "veure titol finestra si n'hi ha més d'una oberta
+
+"custom command to edit vimrc with ':Vimrc'
 :command Vimrc edit ~/vimrc/vimrc
 
 "SYNTAX:
@@ -34,12 +47,6 @@ match ErrorMsg '\s\+$'
 "inspired by https://gist.github.com/tobym/584909
 highlight Url_underline term=underline cterm=underline ctermbg=black
 match     Url_underline 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*'
-
-"PROVATS CONFIRMATS: (des d'aquí fins al final)
-set mouse=a
-set laststatus=1 "veure titol finestra si n'hi ha més d'una oberta
-set nocompatible
-syntax on
 
 "COLORS:
 "colorscheme default
@@ -68,8 +75,6 @@ let g:netrw_banner=0    "disable annoying banner
 let g:netrw_liststyle=3 "tree view
 
 "MAPS:
-"següent pestanya
-nmap , :tabnext<cr>
 "reset syntax colors
 nmap <f10> :syntax sync fromstart<CR>
 "obrir tag (ctags) o link a help (~"go to definition" visual studio style)
@@ -78,6 +83,7 @@ nmap <f12> <C-]>
 nmap <f11> <C-T>
 "escape rapid a normal mode
 inoremap kj <Esc>
+inoremap KJ <Esc>
 "moure's per finestres amb <espai>
 nmap <space> <C-w>w
 "paste amb autoindent
@@ -85,9 +91,14 @@ map p ]p
 "moure's sense tenir en compte el line wrapping
 nnoremap j gj
 nnoremap k gk
+"turn off arrow keys
+noremap <up>    <nop>
+noremap <down>  <nop>
+noremap <left>  <nop>
+noremap <right> <nop>
 
 set nrformats=bin,hex           "C-a suma decimals i hexadecimals correctament
-"prova: 0b10000 54 0x47
+"prova: 0b1001101 61 0x51
 
 set clipboard=unnamed           "system clipboard
 set history=100
@@ -109,11 +120,10 @@ endif
 "nnoremap * *zz
 "nnoremap # #zz
 
-"EVITAR ERRORS: "desactivat perquè anula poder escriure Q mentre busques
+"EVITAR ERRORS: "desactivat perquè anula poder escriure Q majúscula mentre busques
 "cmap Wq wq
 "cmap WQ wq
 "cmap Q q
-
 
 "per crontabs
 autocmd filetype crontab setlocal nobackup nowritebackup
