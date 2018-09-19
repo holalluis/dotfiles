@@ -39,7 +39,7 @@ set mouse=a
 set laststatus=1 "veure titol finestra si n'hi ha més d'una oberta
 
 "custom command to edit vimrc with ':Vimrc'
-:command Vimrc edit ~/vimrc/vimrc
+:command Vimrc vsplit ~/vimrc/vimrc
 
 "SYNTAX:
 "troba trailing whitespaces
