@@ -1,5 +1,9 @@
-# vimrc file
+# my vimrc file
+my configuration for vim text editor
 
-ENG: vimrc file (configuration/preferences) for vim
+# How to use this vimrc file
+add the following line to your .vimrc file (usually in ~/.vimrc)
 
-CAT: arxiu vimrc (configuració/preferències) pel vim
+```
+source "path/to/the/vimrc/file"
+```
