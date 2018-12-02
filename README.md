@@ -5,5 +5,10 @@ my configuration for vim text editor
 add the following line to your .vimrc file (usually in ~/.vimrc)
 
 ```
-source "path/to/the/vimrc/file"
+source "path/to/vimrc/file"
+```
+
+My ~/.vimrc file is:
+```
+source "~/vimrc/vimrc"
 ```
