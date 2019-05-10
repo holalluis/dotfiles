@@ -1,39 +1,59 @@
 "VIMRC holalluis
-"bash alias vimrc='vim ~/vimrc/vimrc'
+"alias vimrc='vim ~/vimrc/vimrc'
 
 "ZONA DE PROVES:
-  command! Groff :w | !bash compile.sh| "fes servir l'script compile.sh per compilar .ms a .pdf
-  nnoremap ,g :Groff<CR>|               "see above
+  nnoremap ,m :make -k -j4<cr><cr>
+  set hlsearch         "highlight while searching
   set display=lastline "comment per fer
   set smarttab         "comment per fer
   set ttyfast          "comment per fer
   set autoread         "auto reload file if it has been changed outside vim
   set belloff=all      "never ring bell
   set history=10000    "history of ':' commands, and history of previous search patterns
+  set textwidth=0      "set text width
 
-"NEW COMMANDS: start with capital letter
-  command! Vimrc  :vsplit ~/vimrc/vimrc        "edit vimrc
-  command! Apunts :vsplit ~/Dropbox/org/apunts "obre apunts folder
-  command! Node   :w | :terminal node   %       "exec current file in node
-  command! Python :w | :terminal python %       "exec current file in python
-  command! Bash   :w | :terminal bash   %       "exec current file in bash
+"ZONA PERMANENT:
+  "fzf: fuzzy file finder
+  set rtp+=/usr/local/opt/fzf
+  nnoremap ,f :FZF<CR>
 
-"LEADER KEY MAPS: leader is comma. el símbol '|' és per poder posar inline comments
-  nnoremap ,a :e#<CR>|                    "edit alternate buffer
+  "underline urls: extracted from https://gist.github.com/tobym/584909
+  highlight Url_underline term=underline cterm=underline ctermbg=black
+  match Url_underline 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*'
+
+"LEADER KEY MAPS:
+  nnoremap ,, :e#<CR>|                    "edit alternate buffer
+  nnoremap ,b :ls<cr>:b|                  "open buffer explorer
+  nnoremap ,n :Node<cr>|                  "execute current file in nodejs
+  nnoremap ,r :source ~/vimrc/vimrc<cr>|  "reload vimrc
   nnoremap ,s :syntax sync fromstart<CR>| "resyntax current file
   nnoremap ,t :vertical terminal<CR>|     "open terminal
-  nnoremap ,e :vs.<CR>|                   "vertical file explorer
-  nnoremap ,n :Node<CR>|                  "exeucte current file in node
+
+"CUSTOM :COMMANDS start with capital letter
+  command! Vimrc          :vs ~/vimrc/vimrc           "edit vimrc
+  command! Org            :vs ~/Dropbox/org/lluis.md  "open org file
+  command! TrimWhitespace keeppatterns %s/\s\+$//e
+
+  "exec current file in various interpreters
+  command! Node   :w | :terminal node %
+  command! Bash   :w | :terminal bash %
+  command! Python :w | :terminal python3 %
+
+"GENERAL:
+  syntax on                             "turn on syntax hl
+  au FileType * set formatoptions-=cro  "desactivar auto comments
+  match ErrorMsg '\s\+$'                "ressalta trailing whitespaces
+  let g:netrw_banner=0                  "netrw disable annoying banner
+  let g:netrw_liststyle=3               "netrw tree view
+
+  "remember last position opening a file
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 "SETS: activar i desactivar
-  "nmap ,n :tabnext<cr>           "es pot fer amb gt
-  "nmap ,p :tabprev<cr>           "es pot fer amb gT
-  "set textwidth=80               "set text width
-  "set colorcolumn=1              "set color column
+  "set colorcolumn=0              "set color column
   "set autochdir                  "canviar pwd automaticament
   "set foldmethod=manual          "manera de plegar text
   "set nofoldenable               "inicialment folds oberts
-  "DESACTIVATS: mirar primer abans d'incloure nova opció que potser ja he mirat abans
   set nolist                      "see invisible characters
   set noruler                     "show position always (no m'agrada)
   set nocompatible                "more useful vim
@@ -51,6 +71,7 @@
   set listchars=eol:$             "makes 'set list' look prettier
   set modelines=5                 "modeline/modelines (:help modeline)
   set mouse=a                     "mouse support
+  set ttymouse=xterm2             "mouse support
   set nrformats=bin,hex           "C-a suma decimals i hexadecimals correctament "test: 0b0101111 61 0x51
   set number                      "show line number
   set path+=**                    "(** searches subdirectories (fa anar gf una mica lent si la carpeta es gran))
@@ -70,7 +91,8 @@
   set foldmethod=indent           "manera de plegar text
 
 "MAPS:
-  nnoremap <f10> :syntax sync fromstart<CR>| "resyntax current file (ara ho faig amb ,s)
+  nnoremap Q gqq|                            "desactivar comandes ex
+  nnoremap <f10> :syntax sync fromstart<CR>| "resyntax current file (,s equivalent)
   nnoremap <f12> <C-]>|                      "obrir tag (ctags) o link a help (~"go to definition" visual studio style)
   nnoremap <f11> <C-T>|                      "back from a jump
   inoremap kj <Esc>|                         "escape rapid a normal mode
@@ -93,20 +115,6 @@
   "cmap Wq wq
   "cmap WQ wq
   "cmap Q q
-
-"GENERAL:
-  syntax on                             "turn on syntax hl
-  filetype plugin on                    "activar omni-completion (^x ^o)
-  au FileType * set formatoptions-=cro  "desactivar auto comments
-  "au bufwritepost vimrc source $MYVIMRC "auto reload vimrc quan guardes (fa coses rares)
-  match ErrorMsg '\s\+$'                "troba trailing whitespaces
-  "underline urls: extracted from https://gist.github.com/tobym/584909
-  highlight Url_underline term=underline cterm=underline ctermbg=black
-  match     Url_underline 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*'
-  "remember last position opening a file
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-  let g:netrw_banner=0    "netrw disable annoying banner
-  let g:netrw_liststyle=3 "netrw tree view
 
 "SYNTAX RELATED:
   autocmd filetype crontab setlocal nobackup nowritebackup      "crontab files
