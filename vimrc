@@ -1,15 +1,35 @@
 "VIMRC holalluis
 "alias vimrc='vim ~/vimrc/vimrc'
 
+syntax on                       "turn on syntax hl
+set nocompatible                "more useful vim
+set backspace=indent,start,eol  "backspace normal
+set history=100                 "history of ':' commands, and history of previous search patterns
+set noruler                     "show position always (no m'agrada)
+set showcmd                     "mostra quina comanda estas escribint a baix a la dreta
+nmap Q gqq|                     "desactivar comandes ex
+set mouse=a                     "mouse support
+set hlsearch                    "highlight while searching
+filetype plugin indent on
+
+"for all text files set 'textwidth' to 78 characters.
+autocmd FileType text setlocal textwidth=78
+
+"remember last position opening a file
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+set autoindent                  "set auto indent on
+set nocursorline                "ilumina linia on hi ha el cursor (no m'agrada)
+set listchars=eol:$             "makes 'set list' look prettier
+set nolist
+set laststatus=1                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
+set display=lastline            "display @@@ at the end of long lines
+
 "ZONA DE PROVES:
   nnoremap ,m :make -k -j4<cr><cr>
-  set hlsearch         "highlight while searching
-  set display=lastline "comment per fer
-  set smarttab         "comment per fer
   set ttyfast          "comment per fer
   set autoread         "auto reload file if it has been changed outside vim
   set belloff=all      "never ring bell
-  set history=10000    "history of ':' commands, and history of previous search patterns
   set textwidth=0      "set text width
 
 "ZONA PERMANENT:
@@ -40,14 +60,11 @@
   command! Python :w | :terminal python3 %
 
 "GENERAL:
-  syntax on                             "turn on syntax hl
   au FileType * set formatoptions-=cro  "desactivar auto comments
   match ErrorMsg '\s\+$'                "ressalta trailing whitespaces
   let g:netrw_banner=0                  "netrw disable annoying banner
   let g:netrw_liststyle=3               "netrw tree view
 
-  "remember last position opening a file
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 "SETS: activar i desactivar
   "set colorcolumn=0              "set color column
@@ -55,28 +72,19 @@
   "set foldmethod=manual          "manera de plegar text
   "set nofoldenable               "inicialment folds oberts
   set nolist                      "see invisible characters
-  set noruler                     "show position always (no m'agrada)
-  set nocompatible                "more useful vim
   set nocursorcolumn              "ilumina columna on hi ha el cursor
-  set nocursorline                "ilumina linia   on hi ha el cursor
   set nohidden                    "navega per arxius sense haver de guardar canvis (no m'agrada)
   set nohlsearch                  "hl search
   set noincsearch                 "incremental search
   set norelativenumber            "no relative number for line number
   set nowrap                      "les linies que surten de la pantalla no es veuen
-  set autoindent                  "auto indent after enter
-  set backspace=indent,start,eol  "backspace normal
   set clipboard=unnamed           "system clipboard
-  set laststatus=1                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
-  set listchars=eol:$             "makes 'set list' look prettier
   set modelines=5                 "modeline/modelines (:help modeline)
-  set mouse=a                     "mouse support
   set ttymouse=xterm2             "mouse support
   set nrformats=bin,hex           "C-a suma decimals i hexadecimals correctament "test: 0b0101111 61 0x51
   set number                      "show line number
   set path+=**                    "(** searches subdirectories (fa anar gf una mica lent si la carpeta es gran))
   set scrolloff=0                 "minimal number of screen lines to keep above and below the cursor (scroll offset)
-  set showcmd                     "mostra quina comanda estas escribint a baix a la dreta
   set tags=tags                   "ctags(1) file
   set wildmenu                    "display all matching files in tab complete
   "TABS:
@@ -85,13 +93,13 @@
   set shiftround                  "use multiple of shiftwidth when indenting with '<' and '>'
   set shiftwidth=2                "number of space character to use for indent
   set tabstop=2                   "width of tab character
+  set smarttab                    "esborra tab amb <BS>
   "FOLDS:
   set foldcolumn=0                "valors: 0 a 12, informacio lateral sobre folds
   set foldlevel=10                "inicialment folds oberts
   set foldmethod=indent           "manera de plegar text
 
 "MAPS:
-  nnoremap Q gqq|                            "desactivar comandes ex
   nnoremap <f10> :syntax sync fromstart<CR>| "resyntax current file (,s equivalent)
   nnoremap <f12> <C-]>|                      "obrir tag (ctags) o link a help (~"go to definition" visual studio style)
   nnoremap <f11> <C-T>|                      "back from a jump
