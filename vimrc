@@ -358,7 +358,7 @@ nnoremap j gj
 nnoremap k gk
 
 " ----------------------------------------------------------------------------
-" Moving lines with CTRL-hjkl
+" Mou línies amb CTRL-hjkl
 " ----------------------------------------------------------------------------
 nnoremap <silent> <C-k> :move-2<cr>
 nnoremap <silent> <C-j> :move+<cr>
@@ -397,10 +397,10 @@ nnoremap <leader><leader> :e#<cr>
 "resyntax current file
 nnoremap <leader>s :syntax sync fromstart<cr>
 
-"invoke make
+"invoca make
 nnoremap <leader>m :make -k -j4<cr><cr>
 
-" Zoom amb <leader>z, com al tmux
+"zoom amb <leader>z, com al tmux
 function! s:zoom()
   if winnr('$') > 1
     tab split
@@ -409,6 +409,7 @@ function! s:zoom()
     tabclose
   endif
 endfunction
+
 nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 
 " }}}
@@ -418,13 +419,13 @@ nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 " ----------------------------------------------------------------------------
 
 command! TrimWhitespace :keeppatterns %s/\s\+$//e
-command! Vimrc          :tabnew ~/dotfiles/vimrc        "edit vimrc in a new tab
+command! Vimrc          :tabnew ~/dotfiles/vimrc       "edit vimrc in a new tab
+command! Org            :tabnew ~/Dropbox/org/lluis.md "open org file in a new tab
+command! Apunts         :tabnew ~/Desktop/apunts       "obre carpeta apunts
+command! Mates          :tabnew ~/Desktop/mates        "obre carpeta matemàtiques
 command! Bash           :w | :terminal bash %
 command! Node           :w | :terminal node %
 command! Python         :w | :terminal python3 %
-command! Org            :tabnew ~/Dropbox/org/lluis.md  "open org file in a new tab
-command! Apunts         :tabnew ~/Desktop/apunts        "obre carpeta apunts
-command! Mates          :tabnew ~/Desktop/mates         "obre carpeta matemàtiques
 
 " }}}
 " ============================================================================
