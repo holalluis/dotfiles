@@ -1,9 +1,16 @@
-# my vimrc file
-my configuration file for vim
+# dotfiles
+my configuration files
 
-## how I use it
-I have this file in ~/dotfiles/vimrc, and this line in ~/.vimrc:
+## how I use 'vimrc'
+I have this line in ~/.vimrc:
 
 ```vim
-  source "~/dotfiles/vimrc"
- ```
+source "~/dotfiles/vimrc"
+```
+
+## how I use 'tmux.conf'
+I have this line in ~/.tmux.conf:
+
+```
+source-file ~/dotfiles/tmux.conf
+```
