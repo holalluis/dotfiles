@@ -2,8 +2,8 @@
 " ============================================================================
 " LLUÍS BOSCH'S .VIMRC {{{
 " ============================================================================
-"   https://github.com/holalluis/vimrc
-"   bash alias -> vimrc='vim ~/vimrc/vimrc'
+"   https://github.com/holalluis/dotfiles
+"   bash alias -> vimrc='vim ~/dotfiles/vimrc'
 " }}}
 " ============================================================================
 " PLUGINS (VIM-PLUG) {{{
@@ -211,7 +211,7 @@ call plug#end()
 "esborra autocmd anteriors
 "auto reload vimrc
 autocmd!
-autocmd BufWritePost vimrc source ~/vimrc/vimrc
+autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "color :Colors
 colorscheme Tomorrow-Night "default
@@ -389,7 +389,7 @@ let mapleader     =','
 let maplocalleader=','
 
 "recarrega vimrc
-nnoremap <leader>r :source ~/vimrc/vimrc<cr>
+nnoremap <leader>r :source ~/dotfiles/vimrc<cr>
 
 "edit alternate buffer (useful!)
 nnoremap <leader><leader> :e#<cr>
@@ -418,7 +418,7 @@ nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 " ----------------------------------------------------------------------------
 
 command! TrimWhitespace :keeppatterns %s/\s\+$//e
-command! Vimrc          :tabnew ~/vimrc/vimrc           "edit vimrc in a new tab
+command! Vimrc          :tabnew ~/dotfiles/vimrc        "edit vimrc in a new tab
 command! Bash           :w | :terminal bash %
 command! Node           :w | :terminal node %
 command! Python         :w | :terminal python3 %
