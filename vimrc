@@ -10,6 +10,10 @@
 " ============================================================================
 
 call plug#begin('~/.vim/plugged')
+  " PROVAR: (futur)
+  " Plug 'airblade/vim-gitgutter'
+  " Plug 'morhetz/gruvbox'
+
   "COLORS:
   Plug 'tomasr/molokai'
   Plug 'chriskempson/vim-tomorrow-theme'
@@ -25,23 +29,23 @@ call plug#begin('~/.vim/plugged')
   " CTRL-V  open in vertical split
   " ----------------------------------------------------------------------------
   Plug 'junegunn/fzf',{'dir':'~/.fzf','do':'./install --all'}
-  nnoremap <leader>f :FZF<cr>
+  nnoremap <leader>F :FZF<cr>
 
   " ----------------------------------------------------------------------------
   " fzf.vim   fzf fuzzy finder wrapper
   " ----------------------------------------------------------------------------
-  " :Files    lists files in current folder (same as :FZF)
-  " :Colors   lists colors
-  " :Buffers  lists buffers
-  " :Lines    lists lines of current buffers
+  " :Files    (same as :FZF) lists files in current folder
+  " :Colors   lists colorschemes
+  " :Buffers  lists open buffers
+  " :Lines    lists all lines of code current buffers
   " :History  lists last files edited
   " :Marks    lists marks
-  " :Ag       https://github.com/ggreer/the_silver_searcher
+  " :Ag       not sure exactly --> https://github.com/ggreer/the_silver_searcher
   " ----------------------------------------------------------------------------
   Plug 'junegunn/fzf.vim'
-  nnoremap <silent> <Leader>C        :Colors<CR>
-  nnoremap <silent> <Leader><Enter>  :Buffers<CR>
-  nnoremap <silent> <Leader>L        :Lines<CR>
+  nnoremap <silent> <Leader>C       :Colors<CR>
+  nnoremap <silent> <Leader><Enter> :Buffers<CR>
+  nnoremap <silent> <Leader>L       :Lines<CR>
 
   " ----------------------------------------------------------------------------
   " goyo.vim + limelight.vim | distraction free writing
@@ -71,20 +75,76 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   " coc.nvim
   " ----------------------------------------------------------------------------
-  " TODO explore deeper
+  " TODO try
   " ----------------------------------------------------------------------------
-  Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install() }}
-  if has_key(g:plugs, 'coc.nvim')
-    function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~# '\s'
-    endfunction
-    inoremap <silent><expr> <TAB>
-          \ pumvisible() ? "\<C-n>" :
-          \ <SID>check_back_space() ? "\<TAB>" :
-          \ coc#refresh()
-    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-  endif
+  Plug 'neoclide/coc.nvim',{'branch':'release'}
+  "CONFIG COPYPASTED FROM COC.VIM README
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+  function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+      execute 'h '.expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+
+  "inoremap <silent><expr> <c-space> coc#refresh()
+  "inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  "nmap <silent> [g <Plug>(coc-diagnostic-prev)
+  "nmap <silent> ]g <Plug>(coc-diagnostic-next)
+  "nmap <silent> gd <Plug>(coc-definition)
+  "nmap <silent> gy <Plug>(coc-type-definition)
+  "nmap <silent> gi <Plug>(coc-implementation)
+  "nmap <silent> gr <Plug>(coc-references)
+  "nnoremap <silent> K :call <SID>show_documentation()<CR>
+  "nmap <leader>rn <Plug>(coc-rename)
+  "xmap <leader>f  <Plug>(coc-format-selected)
+  "nmap <leader>f  <Plug>(coc-format-selected)
+  "xmap <leader>a  <Plug>(coc-codeaction-selected)
+  "nmap <leader>a  <Plug>(coc-codeaction-selected)
+  "nmap <leader>ac  <Plug>(coc-codeaction)
+  "nmap <leader>qf  <Plug>(coc-fix-current)
+  "xmap if <Plug>(coc-funcobj-i)
+  "xmap af <Plug>(coc-funcobj-a)
+  "omap if <Plug>(coc-funcobj-i)
+  "omap af <Plug>(coc-funcobj-a)
+  "nmap <silent> <C-d> <Plug>(coc-range-select)
+  "xmap <silent> <C-d> <Plug>(coc-range-select)
+  "nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+  "nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+  "nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+  "nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+  "nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+  "nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+  "nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+  "nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+  "set hidden
+  "set nobackup
+  "set nowritebackup
+  "set cmdheight=2
+  "set updatetime=300
+  "set shortmess+=c
+  "set signcolumn=yes
+  "autocmd CursorHold * silent call CocActionAsync('highlight')
+  "augroup mygroup
+  "  autocmd!
+  "  " Setup formatexpr specified filetype(s).
+  "  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  "  " Update signature help on jump placeholder
+  "  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  "augroup end
+  "command! -nargs=0 Format :call CocAction('format')
+  "command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+  "command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+  "set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
   "GIT AND GITHUB:
   " ----------------------------------------------------------------------------
@@ -98,29 +158,32 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   " vim-rhubarb
   " ----------------------------------------------------------------------------
-  " TODO explore deeper
+  " TODO per provar
   " ----------------------------------------------------------------------------
-  Plug 'tpope/vim-rhubarb'
+  "Plug 'tpope/vim-rhubarb'
 
   " ----------------------------------------------------------------------------
-  " vim-signify
+  " vim-signify | live git diff
   " ----------------------------------------------------------------------------
-  " TODO explore deeper
   " :SignifyEnable
   " :SignifyDisable
   " ----------------------------------------------------------------------------
   Plug 'mhinz/vim-signify'
 
   " ----------------------------------------------------------------------------
-  " vim-github_dashboard
+  " vim-github_dashboard | veure esdeveniments github
   " ----------------------------------------------------------------------------
-  " TODO explore deeper
+  " :GHDashboard
+  " :GHDashboard USER
+  " :GHActivity
+  " :GHActivity USER
+  " :GHActivity USER/REPO
   " ----------------------------------------------------------------------------
   Plug 'junegunn/vim-github-dashboard'
   let g:github_dashboard={'username':'holalluis'}
 
   " ----------------------------------------------------------------------------
-  " NERD Tree
+  " NERD Tree | file explorer
   " ----------------------------------------------------------------------------
   " :NERDTreeToggle
   " q for closing
@@ -151,7 +214,7 @@ autocmd!
 autocmd BufWritePost vimrc source ~/vimrc/vimrc
 
 "color :Colors
-colorscheme seoul256 "default
+colorscheme Tomorrow-Night "default
 
 "settings
 set colorcolumn=0 "80
