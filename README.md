@@ -1,5 +1,4 @@
 # my configuration files
-========================
 
 ## how I use 'vimrc'
 I have this line in ~/.vimrc:
