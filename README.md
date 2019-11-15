@@ -1,14 +1,8 @@
 # my vimrc file
-my configuration for vim text editor
+my configuration file for vim
 
-## how to use this vimrc file
-add the following line to your .vimrc file (usually in ~/.vimrc)
-
-```vim
-  source "path/to/vimrc/file"
-```
-
-for example:
+## how I use it
+I have my vimrc file in ~/vimrc/vimrc, and I have this line in ~/.vimrc:
 ```vim
   source "~/vimrc/vimrc"
 ```
