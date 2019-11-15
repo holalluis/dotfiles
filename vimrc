@@ -8,7 +8,13 @@
 " ============================================================================
 " PLUGINS (VIM-PLUG) {{{
 " ============================================================================
+
 call plug#begin('~/.vim/plugged')
+  "COLORS:
+  Plug 'tomasr/molokai'
+  Plug 'chriskempson/vim-tomorrow-theme'
+  Plug 'junegunn/seoul256.vim'
+
   " ----------------------------------------------------------------------------
   " fzf     powerful fuzzy finder
   " ----------------------------------------------------------------------------
@@ -80,11 +86,6 @@ call plug#begin('~/.vim/plugged')
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
   endif
 
-  "COLORS:
-  Plug 'tomasr/molokai'
-  Plug 'chriskempson/vim-tomorrow-theme'
-  Plug 'junegunn/seoul256.vim'
-
   "GIT AND GITHUB:
   " ----------------------------------------------------------------------------
   " vim-fugitive
@@ -136,12 +137,14 @@ call plug#begin('~/.vim/plugged')
       \| endif
   augroup END
 call plug#end()
+
 " }}}
 " ============================================================================
 " BASIC SETTINGS {{{
 " activar:    'set option'
 " desactivar: 'set nooption'
 " ============================================================================
+
 "esborra autocmd anteriors
 "auto reload vimrc
 autocmd!
@@ -181,7 +184,7 @@ set equalalways                 "resize windows when opening new ones
 set updatetime=100
 set belloff=all                 "never ring bell
 set display=lastline            "display @@@ at the end of long lines
-set foldcolumn=0                "valors: 0 a 12, informacio lateral sobre folds
+set foldcolumn=0                "valors: 0 a 12, informació lateral sobre folds
 set foldignore=                 "ignora caràcter '#' per folding, plega'l correctament (útil per CSS)
 set foldlevel=10                "inicialment folds oberts
 set foldmethod=indent           "manera de plegar text
@@ -273,6 +276,7 @@ endif
 " ============================================================================
 " MAPPINGS {{{
 " ============================================================================
+
 "kj escaping!
 inoremap kj <Esc>
 cnoremap kj <C-c>
@@ -301,8 +305,6 @@ xnoremap <silent> <C-k> :move-2<cr>gv
 xnoremap <silent> <C-j> :move'>+<cr>gv
 xnoremap <silent> <C-h> <gv
 xnoremap <silent> <C-l> >gv
-xnoremap < <gv
-xnoremap > >gv
 
 " ----------------------------------------------------------------------------
 " Help in new tabs AND "q" for closing help
@@ -315,7 +317,11 @@ function! s:helptab()
 endfunction
 autocmd BufEnter *.txt call s:helptab()
 
-"LEADER MAPPINGS:
+" }}}
+" ----------------------------------------------------------------------------
+" LEADER KEY MAPPINGS: {{{
+" ----------------------------------------------------------------------------
+
 let mapleader     =','
 let maplocalleader=','
 
@@ -342,31 +348,32 @@ function! s:zoom()
 endfunction
 nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 
-"compile C file: $ gcc % && ./a.out
-nnoremap <leader>c :!compila_i_executa.sh %<cr>
-
 " }}}
 " ============================================================================
 " FUNCTIONS AND COMMANDS {{{
-" ============================================================================
 " custom ex commands start with capital letter
-" ============================================================================
+" ----------------------------------------------------------------------------
+
 command! TrimWhitespace :keeppatterns %s/\s\+$//e
 command! Vimrc          :tabnew ~/vimrc/vimrc           "edit vimrc in a new tab
 command! Bash           :w | :terminal bash %
 command! Node           :w | :terminal node %
 command! Python         :w | :terminal python3 %
-
-"no gaire fets servir
 command! Org            :tabnew ~/Dropbox/org/lluis.md  "open org file in a new tab
 command! Apunts         :tabnew ~/Desktop/apunts        "obre carpeta apunts
 command! Mates          :tabnew ~/Desktop/mates         "obre carpeta matemàtiques
 
-"temporal -- pel blog: convertir 'WORD' a '<inline>WORD</inline>'
+" }}}
+" ============================================================================
+" TEMPORAL {{{
+" ============================================================================
+
+" blog: convertir 'WORD' a '<inline>WORD</inline>'
 command! Surround normal Bi<inline><esc>Ea</inline><esc>
-nnoremap ,i :Surround<cr>
+nnoremap <leader>i :Surround<cr>
 
 " }}}
 " ============================================================================
-filetype plugin indent on
+filetype plugin on
+filetype indent on
 syntax enable
