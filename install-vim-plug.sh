@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# INSTALL VIM-PLUG PLUGIN MANAGER
+# DOWNLOAD AND INSTALL VIM-PLUG PLUGIN MANAGER
 
 #ssl accept insecure requests
 export GIT_SSL_NO_VERIFY=true
