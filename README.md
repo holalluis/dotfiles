@@ -23,7 +23,7 @@ Then, the first time you open vim, execute:
 This ```vim-plug``` command will install all the plugins used by my ```vimrc```
 file.
 
-Install is complete. Enjoy ```vim```.
+Install is complete. Enjoy!
 
 ## 2. tmux (how I use it)
 Put this single line in ```~/.tmux.conf```:
