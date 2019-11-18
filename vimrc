@@ -16,7 +16,7 @@ call plug#begin('~/.vim/plugged')
   " PROVAR: (futur)
   " Plug 'airblade/vim-gitgutter' "same as vim-signify
 
-  "COLORS: colorscheme
+  "COLORS: (colorschemes)
   Plug 'tomasr/molokai'
   Plug 'chriskempson/vim-tomorrow-theme'
   Plug 'junegunn/seoul256.vim'
