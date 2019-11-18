@@ -1,12 +1,11 @@
 " vim: set foldmethod=marker foldlevel=99 nomodeline:
 " ============================================================================
-" LLUÍS BOSCH'S .VIMRC {{{
+" LLUÍS BOSCH'S VIMRC {{{
 " ============================================================================
 "  https://github.com/holalluis/dotfiles
 "  bash alias -> vimrc='vim ~/dotfiles/vimrc'
 
 let s:darwin = has('mac')
-
 " }}}
 " ============================================================================
 " PLUGINS (VIM-PLUG) {{{
@@ -32,7 +31,6 @@ call plug#begin('~/.vim/plugged')
   " CTRL-V  open in vertical split
   " ----------------------------------------------------------------------------
   Plug 'junegunn/fzf',{'dir':'~/.fzf','do':'./install --all'}
-  nnoremap <leader>f :FZF<cr>
 
   " ----------------------------------------------------------------------------
   " fzf.vim   fzf fuzzy finder wrapper
@@ -46,9 +44,6 @@ call plug#begin('~/.vim/plugged')
   " :Ag       not sure exactly --> https://github.com/ggreer/the_silver_searcher
   " ----------------------------------------------------------------------------
   Plug 'junegunn/fzf.vim'
-  nnoremap <silent> <Leader>C       :Colors<CR>
-  nnoremap <silent> <Leader><Enter> :Buffers<CR>
-  nnoremap <silent> <Leader>L       :Lines<CR>
 
   " ----------------------------------------------------------------------------
   " goyo.vim + limelight.vim | distraction free writing
@@ -59,7 +54,6 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   Plug 'junegunn/goyo.vim'
   Plug 'junegunn/limelight.vim'
-  nnoremap <Leader>G :Goyo<CR>
 
   " ----------------------------------------------------------------------------
   " vim-emoji :dog: :cat: :rabbit:!
@@ -72,8 +66,6 @@ call plug#begin('~/.vim/plugged')
   " vim-commentary
   " ----------------------------------------------------------------------------
   Plug 'tpope/vim-commentary'
-  map  gc  <Plug>Commentary
-  nmap gcc <Plug>CommentaryLine
 
   " ----------------------------------------------------------------------------
   " coc.nvim
@@ -163,7 +155,7 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   " TODO per provar
   " ----------------------------------------------------------------------------
-  "Plug 'tpope/vim-rhubarb'
+  Plug 'tpope/vim-rhubarb'
 
   " ----------------------------------------------------------------------------
   " vim-signify | live git diff
@@ -194,7 +186,6 @@ call plug#begin('~/.vim/plugged')
   " q for closing
   " ----------------------------------------------------------------------------
   Plug 'scrooloose/nerdtree',{'on':'NERDTreeToggle'}
-  nnoremap <leader>n :NERDTreeToggle<cr>
   augroup nerd_loader
     autocmd!
     autocmd VimEnter * silent! autocmd! FileExplorer
@@ -204,6 +195,7 @@ call plug#begin('~/.vim/plugged')
       \|   execute 'autocmd! nerd_loader'
       \| endif
   augroup END
+
 call plug#end()
 
 " }}}
@@ -213,8 +205,15 @@ call plug#end()
 " desactivar: 'set nooption'
 " ============================================================================
 
+if has('termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
 "colors
-colorscheme molokai
+colorscheme seoul256
+"colorscheme molokai
 "colorscheme gruvbox
 "colorscheme Tomorrow-Night
 "colorscheme default
@@ -225,7 +224,7 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
-set colorcolumn=80 "0
+set colorcolumn=0 "80
 set autoindent                  "set auto indent on
 set autoread                    "auto reload file if it has been changed outside vim
 set backspace=indent,eol,start  "backspace normal
@@ -345,7 +344,7 @@ endif
 
 " }}}
 " ============================================================================
-" MAPPINGS {{{
+" NON-LEADER KEY MAPPINGS {{{
 " ============================================================================
 
 "kj escaping!
@@ -390,7 +389,7 @@ autocmd BufEnter *.txt call s:helptab()
 
 " }}}
 " ----------------------------------------------------------------------------
-" LEADER KEY MAPPINGS: {{{
+" LEADER KEY MAPPINGS {{{
 " ----------------------------------------------------------------------------
 
 let mapleader     =','
@@ -419,6 +418,16 @@ function! s:zoom()
 endfunction
 
 nnoremap <silent> <leader>z :call <sid>zoom()<cr>
+
+"maps plugins
+nnoremap <silent> <leader>f       :FZF<CR>
+nnoremap <silent> <leader>C       :Colors<CR>
+nnoremap <silent> <leader><Enter> :Buffers<CR>
+nnoremap <silent> <leader>L       :Lines<CR>
+nnoremap <Leader>G :Goyo<CR>
+nnoremap <leader>n :NERDTreeToggle<cr>
+map  gc  <Plug>Commentary
+nmap gcc <Plug>CommentaryLine
 
 " }}}
 " ============================================================================
