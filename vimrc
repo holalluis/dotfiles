@@ -2,8 +2,8 @@
 " ============================================================================
 " LLUÍS BOSCH'S .VIMRC {{{
 " ============================================================================
-"   https://github.com/holalluis/dotfiles
-"   bash alias -> vimrc='vim ~/dotfiles/vimrc'
+"  https://github.com/holalluis/dotfiles
+"  bash alias -> vimrc='vim ~/dotfiles/vimrc'
 
 let s:darwin = has('mac')
 
@@ -32,7 +32,7 @@ call plug#begin('~/.vim/plugged')
   " CTRL-V  open in vertical split
   " ----------------------------------------------------------------------------
   Plug 'junegunn/fzf',{'dir':'~/.fzf','do':'./install --all'}
-  nnoremap <leader>F :FZF<cr>
+  nnoremap <leader>f :FZF<cr>
 
   " ----------------------------------------------------------------------------
   " fzf.vim   fzf fuzzy finder wrapper
