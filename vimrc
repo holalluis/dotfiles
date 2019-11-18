@@ -6,14 +6,13 @@
 "  bash alias -> vimrc='vim ~/dotfiles/vimrc'
 
 let s:darwin = has('mac')
+
 " }}}
 " ============================================================================
 " PLUGINS (VIM-PLUG) {{{
 " ============================================================================
 
 call plug#begin('~/.vim/plugged')
-  " PROVAR: (futur)
-  " Plug 'airblade/vim-gitgutter' "same as vim-signify
 
   "COLORS: (colorschemes)
   Plug 'tomasr/molokai'
@@ -165,7 +164,7 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   Plug 'mhinz/vim-signify'
   " disable signify by default
-  let g:signify_disable_by_default = 1
+  let g:signify_disable_by_default = 0
 
   " ----------------------------------------------------------------------------
   " vim-github_dashboard | veure esdeveniments github
@@ -205,11 +204,12 @@ call plug#end()
 " desactivar: 'set nooption'
 " ============================================================================
 
-if has('termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
+set notermguicolors
+"if has('termguicolors')
+"  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"  set termguicolors
+"endif
 
 "colors
 colorscheme seoul256
