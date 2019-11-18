@@ -4,6 +4,9 @@
 " ============================================================================
 "   https://github.com/holalluis/dotfiles
 "   bash alias -> vimrc='vim ~/dotfiles/vimrc'
+
+let s:darwin = has('mac')
+
 " }}}
 " ============================================================================
 " PLUGINS (VIM-PLUG) {{{
@@ -11,13 +14,13 @@
 
 call plug#begin('~/.vim/plugged')
   " PROVAR: (futur)
-  " Plug 'airblade/vim-gitgutter'
-  " Plug 'morhetz/gruvbox'
+  " Plug 'airblade/vim-gitgutter' "same as vim-signify
 
-  "COLORS:
+  "COLORS: colorscheme
   Plug 'tomasr/molokai'
   Plug 'chriskempson/vim-tomorrow-theme'
   Plug 'junegunn/seoul256.vim'
+  Plug 'morhetz/gruvbox'
 
   " ----------------------------------------------------------------------------
   " fzf     powerful fuzzy finder
@@ -169,6 +172,8 @@ call plug#begin('~/.vim/plugged')
   " :SignifyDisable
   " ----------------------------------------------------------------------------
   Plug 'mhinz/vim-signify'
+  " disable signify by default
+  let g:signify_disable_by_default = 1
 
   " ----------------------------------------------------------------------------
   " vim-github_dashboard | veure esdeveniments github
@@ -208,13 +213,16 @@ call plug#end()
 " desactivar: 'set nooption'
 " ============================================================================
 
+"colors
+colorscheme molokai
+"colorscheme gruvbox
+"colorscheme Tomorrow-Night
+"colorscheme default
+
 "esborra autocmd anteriors
 "auto reload vimrc
 autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
-
-"color :Colors
-colorscheme Tomorrow-Night "default
 
 "settings
 set colorcolumn=0 "80
