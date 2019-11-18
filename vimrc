@@ -225,7 +225,7 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
-set colorcolumn=0 "80
+set colorcolumn=80 "0
 set autoindent                  "set auto indent on
 set autoread                    "auto reload file if it has been changed outside vim
 set backspace=indent,eol,start  "backspace normal
