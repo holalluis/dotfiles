@@ -1,6 +1,6 @@
 " vim: set foldmethod=marker foldlevel=99 nomodeline:
 " ============================================================================
-" LLUÍS BOSCH'S .VIMRC {{{
+" LLUÍS BOSCH'S VIMRC {{{
 " ============================================================================
 " https://github.com/holalluis/dotfiles
 " bash alias -> alias vimrc='vim ~/dotfiles/vimrc'
@@ -144,7 +144,7 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   " TODO provar
   " ----------------------------------------------------------------------------
-  "Plug 'tpope/vim-rhubarb'
+  Plug 'tpope/vim-rhubarb'
 
   " ----------------------------------------------------------------------------
   " vim-signify | live git diff
@@ -154,7 +154,7 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   Plug 'mhinz/vim-signify'
   " disable signify by default
-  let g:signify_disable_by_default = 1
+  let g:signify_disable_by_default = 0
 
 call plug#end()
 
@@ -165,9 +165,15 @@ call plug#end()
 " desactivar: 'set nooption'
 " ============================================================================
 
-"colorscheme
+set notermguicolors
+"if has('termguicolors')
+"  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"  set termguicolors
+"endif
+
+"colors
 colorscheme default
-"colorscheme Tomorrow-Night-Bright
 "colorscheme seoul256
 "colorscheme molokai
 "colorscheme gruvbox
@@ -298,7 +304,7 @@ autocmd FileType * set formatoptions-=cro "desactivar auto comments
 
 " }}}
 " ============================================================================
-" MAPPINGS {{{
+" NON-LEADER KEY MAPPINGS {{{
 " ============================================================================
 
 "kj escaping
@@ -343,7 +349,7 @@ autocmd BufEnter *.txt call s:helptab()
 
 " }}}
 " ----------------------------------------------------------------------------
-" LEADER KEY MAPPINGS: {{{
+" LEADER KEY MAPPINGS {{{
 " ----------------------------------------------------------------------------
 
 let mapleader     =','
