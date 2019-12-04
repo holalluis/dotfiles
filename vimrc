@@ -2,8 +2,8 @@
 " ============================================================================
 " LLUÍS BOSCH'S .VIMRC {{{
 " ============================================================================
-"   https://github.com/holalluis/dotfiles
-"   bash alias -> vimrc='vim ~/dotfiles/vimrc'
+" https://github.com/holalluis/dotfiles
+" bash alias -> alias vimrc='vim ~/dotfiles/vimrc'
 
 let s:darwin = has('mac')
 
@@ -13,10 +13,8 @@ let s:darwin = has('mac')
 " ============================================================================
 
 call plug#begin('~/.vim/plugged')
-  " PROVAR: (futur)
-  " Plug 'airblade/vim-gitgutter' "same as vim-signify
 
-  "COLORS: (colorschemes)
+  "COLORS: (colorscheme)
   Plug 'tomasr/molokai'
   Plug 'chriskempson/vim-tomorrow-theme'
   Plug 'junegunn/seoul256.vim'
@@ -32,7 +30,6 @@ call plug#begin('~/.vim/plugged')
   " CTRL-V  open in vertical split
   " ----------------------------------------------------------------------------
   Plug 'junegunn/fzf',{'dir':'~/.fzf','do':'./install --all'}
-  nnoremap <leader>F :FZF<cr>
 
   " ----------------------------------------------------------------------------
   " fzf.vim   fzf fuzzy finder wrapper
@@ -46,9 +43,6 @@ call plug#begin('~/.vim/plugged')
   " :Ag       not sure exactly --> https://github.com/ggreer/the_silver_searcher
   " ----------------------------------------------------------------------------
   Plug 'junegunn/fzf.vim'
-  nnoremap <silent> <Leader>C       :Colors<CR>
-  nnoremap <silent> <Leader><Enter> :Buffers<CR>
-  nnoremap <silent> <Leader>L       :Lines<CR>
 
   " ----------------------------------------------------------------------------
   " goyo.vim + limelight.vim | distraction free writing
@@ -59,21 +53,6 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   Plug 'junegunn/goyo.vim'
   Plug 'junegunn/limelight.vim'
-  nnoremap <Leader>G :Goyo<CR>
-
-  " ----------------------------------------------------------------------------
-  " vim-emoji :dog: :cat: :rabbit:!
-  " ----------------------------------------------------------------------------
-  Plug 'junegunn/vim-emoji'
-  command! -range EmojiReplace <line1>,<line2>s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g
-
-  " EDITING:
-  " ----------------------------------------------------------------------------
-  " vim-commentary
-  " ----------------------------------------------------------------------------
-  Plug 'tpope/vim-commentary'
-  map  gc  <Plug>Commentary
-  nmap gcc <Plug>CommentaryLine
 
   " ----------------------------------------------------------------------------
   " coc.nvim
@@ -81,7 +60,8 @@ call plug#begin('~/.vim/plugged')
   " TODO try
   " ----------------------------------------------------------------------------
   Plug 'neoclide/coc.nvim',{'branch':'release'}
-  "CONFIG COPYPASTED FROM COC.VIM README
+
+  "CONFIG COPYPASTED FROM COC.VIM README (potser no ha de ser aqui dins)
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
@@ -91,6 +71,7 @@ call plug#begin('~/.vim/plugged')
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
   endfunction
+
   function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
       execute 'h '.expand('<cword>')
@@ -161,7 +142,7 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   " vim-rhubarb
   " ----------------------------------------------------------------------------
-  " TODO per provar
+  " TODO provar
   " ----------------------------------------------------------------------------
   "Plug 'tpope/vim-rhubarb'
 
@@ -175,35 +156,6 @@ call plug#begin('~/.vim/plugged')
   " disable signify by default
   let g:signify_disable_by_default = 1
 
-  " ----------------------------------------------------------------------------
-  " vim-github_dashboard | veure esdeveniments github
-  " ----------------------------------------------------------------------------
-  " :GHDashboard
-  " :GHDashboard USER
-  " :GHActivity
-  " :GHActivity USER
-  " :GHActivity USER/REPO
-  " ----------------------------------------------------------------------------
-  Plug 'junegunn/vim-github-dashboard'
-  let g:github_dashboard={'username':'holalluis'}
-
-  " ----------------------------------------------------------------------------
-  " NERD Tree | file explorer
-  " ----------------------------------------------------------------------------
-  " :NERDTreeToggle
-  " q for closing
-  " ----------------------------------------------------------------------------
-  Plug 'scrooloose/nerdtree',{'on':'NERDTreeToggle'}
-  nnoremap <leader>n :NERDTreeToggle<cr>
-  augroup nerd_loader
-    autocmd!
-    autocmd VimEnter * silent! autocmd! FileExplorer
-    autocmd BufEnter,BufNew *
-      \  if isdirectory(expand('<amatch>'))
-      \|   call plug#load('nerdtree')
-      \|   execute 'autocmd! nerd_loader'
-      \| endif
-  augroup END
 call plug#end()
 
 " }}}
@@ -213,38 +165,36 @@ call plug#end()
 " desactivar: 'set nooption'
 " ============================================================================
 
-"colors
-colorscheme molokai
+"colorscheme
+colorscheme default
+"colorscheme Tomorrow-Night-Bright
+"colorscheme seoul256
+"colorscheme molokai
 "colorscheme gruvbox
-"colorscheme Tomorrow-Night
-"colorscheme default
 
 "esborra autocmd anteriors
-"auto reload vimrc
 autocmd!
+
+"auto reload vimrc
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
-set colorcolumn=80 "0
+set colorcolumn=0 "80
 set autoindent                  "set auto indent on
 set autoread                    "auto reload file if it has been changed outside vim
 set backspace=indent,eol,start  "backspace normal
 set clipboard=unnamed           "system clipboard
 set encoding=utf-8
-set hidden                      "navega per arxius sense haver de guardar canvis
-set nohlsearch
 set ignorecase smartcase        "smartcase ignores case when searches using lowercase only
-set noincsearch                 "incremental search
-set laststatus=2                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
+set laststatus=1                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
 set lazyredraw
 set listchars=eol:$             "makes 'set list' look prettier
 set modeline
 set modelines=5                 "modeline/modelines (:help modeline)
-set nrformats=bin,hex           "C-a suma decimals i hexadecimals correctament "test: 0b0101111 61 0x51
+set nrformats=bin,hex           "C-a suma decimals i hexadecimals correctament "test: 0b0110001 63 0x4d
 set number                      "show line number
 set scrolloff=0                 "minimal number of screen lines to keep above and below the cursor (scroll offset)
 set showcmd                     "mostra quina comanda estas escribint a baix a la dreta
-set smartindent
 set tags=tags                   "ctags(1) file
 set textwidth=0
 set timeoutlen=500              "timeout for commands
@@ -260,7 +210,7 @@ set foldignore=                 "ignora caràcter '#' per folding, plega'l corre
 set foldlevel=10                "inicialment folds oberts
 set foldmethod=indent           "manera de plegar text
 set mouse=a                     "mouse support
-set ttymouse=xterm2            "mouse support for tmux
+set ttymouse=xterm2             "mouse support for tmux
 set shiftround                  "use multiple of shiftwidth when indenting with '<' and '>'
 set shiftwidth=2                "number of space character to use for indent
 set smarttab                    "esborra tab amb <BS>
@@ -282,6 +232,10 @@ set nopaste                     "prevents insert paste mode (fa coses rares)
 set norelativenumber            "no relative number for line number
 set noruler                     "show position always (no m'agrada)
 set nowrap                      "les linies que surten de la pantalla no es veuen
+set nosmartindent
+set noincsearch                 "incremental search
+set nohidden                    "navega per arxius sense haver de guardar canvis
+set nohlsearch
 
 "better status line
 function! s:statusline_expr()
@@ -294,6 +248,7 @@ function! s:statusline_expr()
   let pct = ' %P'
   return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
 endfunction
+
 let &statusline = s:statusline_expr()
 
 "annoying temporary files
@@ -314,41 +269,39 @@ match Url_underline 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\
 let g:netrw_banner=0     "netrw disable annoying banner
 let g:netrw_liststyle=3  "netrw tree view
 
-"autocmd FileType * set formatoptions-=cro                    "desactivar auto comments
+"misc
 match ErrorMsg '\s\+$'                                        "ressalta trailing whitespaces
 autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set ft=groff "groff files
+autocmd FileType * set formatoptions-=cro "desactivar auto comments
 
 "COPIATS SENSE SABER QUE FAN: TODO
-set virtualedit=block
-set shortmess=aIT
-set whichwrap=b,s
-set nojoinspaces
-set diffopt=filler,vertical
-set grepformat=%f:%l:%c:%m,%f:%l:%m
-set completeopt=menuone,preview
-silent! set cryptmethod=blowfish2
-
-if exists('&fixeol')
-  set nofixeol
-endif
-
-set formatoptions+=1
-if has('patch-7.3.541')
-  set formatoptions+=j
-endif
-
-if has('patch-7.4.338')
-  let &showbreak = '↳ '
-  set breakindent
-  set breakindentopt=sbr
-endif
+"set virtualedit=block
+"set shortmess=aT
+"set whichwrap=b,s
+"set nojoinspaces
+"set diffopt=filler,vertical
+"set grepformat=%f:%l:%c:%m,%f:%l:%m
+"set completeopt=menuone,preview
+"silent! set cryptmethod=blowfish2
+"if exists('&fixeol')
+  "set nofixeol
+"endif
+"set formatoptions+=1
+"if has('patch-7.3.541')
+  "set formatoptions+=j
+"endif
+"if has('patch-7.4.338')
+  "let &showbreak = '↳ '
+  "set breakindent
+  "set breakindentopt=sbr
+"endif
 
 " }}}
 " ============================================================================
 " MAPPINGS {{{
 " ============================================================================
 
-"kj escaping!
+"kj escaping
 inoremap kj <Esc>
 cnoremap kj <C-c>
 
@@ -420,6 +373,10 @@ endfunction
 
 nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 
+"plugins
+nnoremap <leader>f :FZF<cr>
+nnoremap <leader>C :Colors<cr>
+
 " }}}
 " ============================================================================
 " FUNCTIONS AND COMMANDS {{{
@@ -446,6 +403,6 @@ nnoremap <leader>i :Surround<cr>
 
 " }}}
 " ============================================================================
-filetype plugin on
-filetype indent on
+filetype plugin off
+filetype indent off
 syntax enable
