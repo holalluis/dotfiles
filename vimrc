@@ -144,7 +144,7 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   " TODO provar
   " ----------------------------------------------------------------------------
-  Plug 'tpope/vim-rhubarb'
+  " Plug 'tpope/vim-rhubarb'
 
   " ----------------------------------------------------------------------------
   " vim-signify | live git diff
@@ -154,7 +154,7 @@ call plug#begin('~/.vim/plugged')
   " ----------------------------------------------------------------------------
   Plug 'mhinz/vim-signify'
   " disable signify by default
-  let g:signify_disable_by_default = 0
+  let g:signify_disable_by_default = 1
 
 call plug#end()
 
