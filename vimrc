@@ -2,7 +2,8 @@
 " ============================================================================
 " LLUÍS BOSCH'S VIMRC {{{
 " ============================================================================
-" compatible with vim & neovim
+" compatible with vim   & neovim
+" compatible with macOs & linux
 " https://github.com/holalluis/dotfiles
 " useful bash alias -> alias vimrc='vim ~/dotfiles/vimrc'
 " }}}
