@@ -2,19 +2,21 @@
 " ============================================================================
 " LLUÍS BOSCH'S VIMRC {{{
 " ============================================================================
+" compatible with vim & neovim
 " https://github.com/holalluis/dotfiles
-" bash alias -> alias vimrc='vim ~/dotfiles/vimrc'
-
-let s:darwin = has('mac')
-
+" useful bash alias -> alias vimrc='vim ~/dotfiles/vimrc'
 " }}}
 " ============================================================================
 " PLUGINS (VIM-PLUG) {{{
 " ============================================================================
-
 call plug#begin('~/.vim/plugged')
 
-  "COLORS: (colorscheme)
+  "PROVANT:
+  Plug 'scrooloose/nerdtree'     "file browsing
+  Plug 'bling/vim-airline'       "nice status bar
+  Plug 'plasticboy/vim-markdown' "syntax markdown
+
+  "COLORS:
   Plug 'tomasr/molokai'
   Plug 'chriskempson/vim-tomorrow-theme'
   Plug 'junegunn/seoul256.vim'
@@ -32,7 +34,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf',{'dir':'~/.fzf','do':'./install --all'}
 
   " ----------------------------------------------------------------------------
-  " fzf.vim   fzf fuzzy finder wrapper
+  " fzf.vim   fzf wrapper
   " ----------------------------------------------------------------------------
   " :Files    (same as :FZF) lists files in current folder
   " :Colors   lists colorschemes
@@ -55,13 +57,33 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/limelight.vim'
 
   " ----------------------------------------------------------------------------
+  " vim-fugitive & vim-rhubarb (GIT AND GITHUB)
+  " ----------------------------------------------------------------------------
+  " :Gstatus
+  " :Gdiff
+  " ----------------------------------------------------------------------------
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-rhubarb'
+
+  " ----------------------------------------------------------------------------
+  " vim-signify | live git diff
+  " ----------------------------------------------------------------------------
+  " :SignifyEnable
+  " :SignifyDisable
+  " :SignifyToggle
+  " ----------------------------------------------------------------------------
+  Plug 'mhinz/vim-signify'
+  " disabled by default
+  let g:signify_disable_by_default = 1
+
+  " ----------------------------------------------------------------------------
   " coc.nvim
   " ----------------------------------------------------------------------------
-  " TODO try
+  " TODO
   " ----------------------------------------------------------------------------
   Plug 'neoclide/coc.nvim',{'branch':'release'}
 
-  "CONFIG COPYPASTED FROM COC.VIM README (potser no ha de ser aqui dins)
+  "COPYPASTED FROM COC.NVIM
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
@@ -80,103 +102,29 @@ call plug#begin('~/.vim/plugged')
     endif
   endfunction
 
-  "inoremap <silent><expr> <c-space> coc#refresh()
-  "inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-  "nmap <silent> [g <Plug>(coc-diagnostic-prev)
-  "nmap <silent> ]g <Plug>(coc-diagnostic-next)
-  "nmap <silent> gd <Plug>(coc-definition)
-  "nmap <silent> gy <Plug>(coc-type-definition)
-  "nmap <silent> gi <Plug>(coc-implementation)
-  "nmap <silent> gr <Plug>(coc-references)
-  "nnoremap <silent> K :call <SID>show_documentation()<CR>
-  "nmap <leader>rn <Plug>(coc-rename)
-  "xmap <leader>f  <Plug>(coc-format-selected)
-  "nmap <leader>f  <Plug>(coc-format-selected)
-  "xmap <leader>a  <Plug>(coc-codeaction-selected)
-  "nmap <leader>a  <Plug>(coc-codeaction-selected)
-  "nmap <leader>ac  <Plug>(coc-codeaction)
-  "nmap <leader>qf  <Plug>(coc-fix-current)
-  "xmap if <Plug>(coc-funcobj-i)
-  "xmap af <Plug>(coc-funcobj-a)
-  "omap if <Plug>(coc-funcobj-i)
-  "omap af <Plug>(coc-funcobj-a)
-  "nmap <silent> <C-d> <Plug>(coc-range-select)
-  "xmap <silent> <C-d> <Plug>(coc-range-select)
-  "nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-  "nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-  "nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-  "nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-  "nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-  "nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-  "nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-  "nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-  "set hidden
-  "set nobackup
-  "set nowritebackup
-  "set cmdheight=2
-  "set updatetime=300
-  "set shortmess+=c
-  "set signcolumn=yes
-  "autocmd CursorHold * silent call CocActionAsync('highlight')
-  "augroup mygroup
-  "  autocmd!
-  "  " Setup formatexpr specified filetype(s).
-  "  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  "  " Update signature help on jump placeholder
-  "  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-  "augroup end
-  "command! -nargs=0 Format :call CocAction('format')
-  "command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-  "command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-  "set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-  "GIT AND GITHUB:
-  " ----------------------------------------------------------------------------
-  " vim-fugitive
-  " ----------------------------------------------------------------------------
-  " :Gstatus
-  " :Gdiff
-  " ----------------------------------------------------------------------------
-  Plug 'tpope/vim-fugitive'
-
-  " ----------------------------------------------------------------------------
-  " vim-rhubarb
-  " ----------------------------------------------------------------------------
-  " TODO provar
-  " ----------------------------------------------------------------------------
-  Plug 'tpope/vim-rhubarb'
-
-  " ----------------------------------------------------------------------------
-  " vim-signify | live git diff
-  " ----------------------------------------------------------------------------
-  " :SignifyEnable
-  " :SignifyDisable
-  " ----------------------------------------------------------------------------
-  Plug 'mhinz/vim-signify'
-  " disable signify by default
-  let g:signify_disable_by_default = 0
-
+" plug#end() updates &runtimepath and initialize plugin system
+" automatically executes `filetype plugin indent` on and `syntax enable`.
 call plug#end()
-
 " }}}
 " ============================================================================
 " BASIC SETTINGS {{{
+" ============================================================================
 " activar:    'set option'
 " desactivar: 'set nooption'
 " ============================================================================
 
-set notermguicolors
-"if has('termguicolors')
-"  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-"  set termguicolors
-"endif
-
 "colors
-colorscheme default
-"colorscheme seoul256
+"colorscheme default
 "colorscheme molokai
+"colorscheme seoul256
 "colorscheme gruvbox
+colorscheme tomorrow-night
+
+if has('nvim')
+  set termguicolors
+else
+  set notermguicolors
+endif
 
 "esborra autocmd anteriors
 autocmd!
@@ -185,14 +133,14 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
-set colorcolumn=0 "80
+set colorcolumn=80 "0
 set autoindent                  "set auto indent on
-set autoread                    "auto reload file if it has been changed outside vim
+set autoread                    "autoreload if it has been changed outside vim
 set backspace=indent,eol,start  "backspace normal
 set clipboard=unnamed           "system clipboard
 set encoding=utf-8
-set ignorecase smartcase        "smartcase ignores case when searches using lowercase only
-set laststatus=1                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
+set smartcase                   "ignores case searching when lowercase only
+set laststatus=2                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
 set lazyredraw
 set listchars=eol:$             "makes 'set list' look prettier
 set modeline
@@ -212,11 +160,10 @@ set updatetime=100
 set belloff=all                 "never ring bell
 set display=lastline            "display @@@ at the end of long lines
 set foldcolumn=0                "valors: 0 a 12, informació lateral sobre folds
-set foldignore=                 "ignora caràcter '#' per folding, plega'l correctament (útil per CSS)
+set foldignore=                 "per defecte s'ignora caràcter '#' per folding, plega'l correctament (útil per CSS)
 set foldlevel=10                "inicialment folds oberts
 set foldmethod=indent           "manera de plegar text
 set mouse=a                     "mouse support
-set ttymouse=xterm2             "mouse support for tmux
 set shiftround                  "use multiple of shiftwidth when indenting with '<' and '>'
 set shiftwidth=2                "number of space character to use for indent
 set smarttab                    "esborra tab amb <BS>
@@ -226,7 +173,17 @@ set foldlevelstart=99
 set ttyfast
 set synmaxcol=1000              "maxima columna per renderitzar sintaxi
 set complete-=i                 "completion with CTRL-N and CTRL-P
-"set complete=.,w,b,u,t
+set complete=.,w,b,u,t
+
+if !has('nvim')
+  set ttymouse=xterm2 "mouse support for tmux
+endif
+
+if has('mac')
+  set clipboard=unnamed
+else
+  set clipboard=unnamedplus
+endif
 
 "DESACTIVATS:
 set nolist                      "see invisible characters
@@ -244,18 +201,18 @@ set nohidden                    "navega per arxius sense haver de guardar canvis
 set nohlsearch
 
 "better status line
-function! s:statusline_expr()
-  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
-  let ro  = "%{&readonly ? '[RO] ' : ''}"
-  let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
-  let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
-  let sep = ' %= '
-  let pos = ' %-12(%l : %c%V%) '
-  let pct = ' %P'
-  return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
-endfunction
-
-let &statusline = s:statusline_expr()
+"function! s:statusline_expr()
+"  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+"  let ro  = "%{&readonly ? '[RO] ' : ''}"
+"  let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+"  let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+"  let sep = ' %= '
+"  let pos = ' %-12(%l : %c%V%) '
+"  let pct = ' %P'
+"  return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+"endfunction
+"
+"let &statusline = s:statusline_expr()
 
 "annoying temporary files
 set backupdir=/tmp//,.
@@ -271,8 +228,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |exe "normal! g`
 highlight Url_underline term=underline cterm=underline ctermbg=black
 match Url_underline 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*'
 
-"netrw file explorer
-let g:netrw_banner=0     "netrw disable annoying banner
+"netrw file explorer settings
+let g:netrw_banner=0     "netrw disable banner
 let g:netrw_liststyle=3  "netrw tree view
 
 "misc
@@ -324,6 +281,12 @@ nnoremap p ]p
 nnoremap j gj
 nnoremap k gk
 
+" I type Wq more often than wq
+cmap Wq wq
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
 " ----------------------------------------------------------------------------
 " Mou línies amb CTRL-hjkl
 " ----------------------------------------------------------------------------
@@ -351,44 +314,25 @@ autocmd BufEnter *.txt call s:helptab()
 " ----------------------------------------------------------------------------
 " LEADER KEY MAPPINGS {{{
 " ----------------------------------------------------------------------------
+let mapleader=','
 
-let mapleader     =','
-let maplocalleader=','
-
-"recarrega vimrc
-nnoremap <leader>r :source ~/dotfiles/vimrc<cr>
-
-"edit alternate buffer (useful!)
-nnoremap <leader><leader> :e#<cr>
-
-"resyntax current file
-nnoremap <leader>s :syntax sync fromstart<cr>
-
-"invoca make
-nnoremap <leader>m :make -k -j4<cr><cr>
-
-"zoom amb <leader>z, com al tmux
-function! s:zoom()
-  if winnr('$') > 1
-    tab split
-  elseif len(filter(map(range(tabpagenr('$')), 'tabpagebuflist(v:val + 1)'),
-                  \ 'index(v:val, '.bufnr('').') >= 0')) > 1
-    tabclose
-  endif
-endfunction
-
-nnoremap <silent> <leader>z :call <sid>zoom()<cr>
-
-"plugins
+" PLUGIN LEADER MAPPINGS:
 nnoremap <leader>f :FZF<cr>
-nnoremap <leader>C :Colors<cr>
+nnoremap <leader>c :Colors<cr>
+nnoremap <leader>q :NERDTreeToggle<cr>
+nnoremap <leader>g :SignifyToggle<cr>
+
+" NATIVE VIM LEADER MAPPINGS:
+nnoremap <leader>r        :source ~/dotfiles/vimrc<cr>
+nnoremap <leader>s        :syntax sync fromstart<cr>
+nnoremap <leader><leader> :e#<cr>
+nnoremap <leader>m        :make -k -j4<cr><cr>
 
 " }}}
 " ============================================================================
 " FUNCTIONS AND COMMANDS {{{
 " custom ex commands start with capital letter
 " ----------------------------------------------------------------------------
-
 command! TrimWhitespace :keeppatterns %s/\s\+$//e
 command! Vimrc          :tabnew ~/dotfiles/vimrc       "edit vimrc in a new tab
 command! Org            :tabnew ~/Dropbox/org/lluis.md "open org file in a new tab
@@ -397,18 +341,17 @@ command! Mates          :tabnew ~/Desktop/mates        "obre carpeta matemàtiqu
 command! Bash           :w | :terminal bash %
 command! Node           :w | :terminal node %
 command! Python         :w | :terminal python3 %
-
 " }}}
 " ============================================================================
 " TEMPORAL {{{
 " ============================================================================
 
-" blog: convertir 'WORD' a '<inline>WORD</inline>'
+" útil pel blog: convertir 'WORD' a '<inline>WORD</inline>'
 command! Surround normal Bi<inline><esc>Ea</inline><esc>
 nnoremap <leader>i :Surround<cr>
 
 " }}}
 " ============================================================================
-filetype plugin off
+filetype plugin on
 filetype indent off
 syntax enable
