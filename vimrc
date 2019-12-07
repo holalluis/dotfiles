@@ -1,4 +1,5 @@
 " vim: set foldmethod=marker foldlevel=99 nomodeline:
+
 " ============================================================================
 " LLUÍS BOSCH'S VIMRC {{{
 " ============================================================================
@@ -7,11 +8,13 @@
 " compatible with macOs & linux
 " useful bash alias:
 "   alias vimrc='vim ~/dotfiles/vimrc'
+
 " }}}
 " ============================================================================
-" PLUGINS (VIM-PLUG) {{{
+" PLUGINS (VIM-PLUG MANAGER) {{{
 " ============================================================================
 call plug#begin('~/.vim/plugged')
+
   "PROVANT:
   Plug 'bling/vim-airline'       "nice status bar
   Plug 'plasticboy/vim-markdown' "good markdown syntax
@@ -74,13 +77,13 @@ call plug#begin('~/.vim/plugged')
   " :SignifyToggle
   " ----------------------------------------------------------------------------
   Plug 'mhinz/vim-signify'
-  " disabled by default
+  " disable signify by default
   let g:signify_disable_by_default = 1
 
   " ----------------------------------------------------------------------------
   " coc.nvim
   " ----------------------------------------------------------------------------
-  " TODO
+  " TODO (veure configuració més avall)
   " ----------------------------------------------------------------------------
   Plug 'neoclide/coc.nvim',{'branch':'release'}
 
@@ -88,6 +91,7 @@ call plug#begin('~/.vim/plugged')
 " automatically executes `filetype plugin indent` on and `syntax enable`.
 " Plugins become visible to Vim after this call.
 call plug#end()
+
 " }}}
 " ============================================================================
 " BASIC SETTINGS {{{
@@ -98,7 +102,7 @@ call plug#end()
 
 "colors
 "colorscheme default
-colorscheme molokai
+"colorscheme molokai
 "colorscheme seoul256
 "colorscheme gruvbox
 "colorscheme tomorrow-night
@@ -116,7 +120,7 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
-set colorcolumn=0 "80 "110
+set colorcolumn=0               "80 110 línia vertical límit caràcters per línia
 set autoindent                  "set auto indent on
 set autoread                    "autoreload if it has been changed outside vim
 set backspace=indent,eol,start  "backspace normal
@@ -153,7 +157,7 @@ set smarttab                    "esborra tab amb <BS>
 set tabstop=2                   "width of tab character
 set expandtab smarttab          "insert spaces instead of tab
 set foldlevelstart=99
-set ttyfast
+set ttyfast                     "removed in neovim
 set synmaxcol=1000              "maxima columna per renderitzar sintaxi
 set complete-=i                 "completion with CTRL-N and CTRL-P
 set complete=.,w,b,u,t
@@ -162,7 +166,7 @@ if !has('nvim')
   set ttymouse=xterm2 "vim mouse support for tmux
 endif
 
-"clipboard
+"clipboard (mac and linux)
 if has('mac')
   set clipboard=unnamed
 else
@@ -170,21 +174,24 @@ else
 endif
 
 "DESACTIVATS:
+set nocompatible                "removed in neovim
 set nolist                      "see invisible characters
-set nostartofline               " Keep the cursor on the same column
+set nostartofline               "keep the cursor on the same column
 set nocursorline                "ilumina linia on hi ha el cursor
 set nocursorcolumn              "ilumina columna on hi ha el cursor
-set nocompatible                "more useful vim
 set nopaste                     "prevents insert paste mode (fa coses rares)
 set norelativenumber            "no relative number for line number
 set noruler                     "show position always (no m'agrada)
-set nowrap                      "les linies que surten de la pantalla no es veuen
+set nowrap                      "les linies que surten de la pantalla no es veuen               asldkfj                                   alsdkfj                         laskdjfklj
 set nosmartindent
 set noincsearch                 "incremental search
 set nohidden                    "navega per arxius sense haver de guardar canvis
 set nohlsearch
 
-"better status line
+"remember last position opening a file
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |exe "normal! g`\"" | endif
+
+"custom status line
 "function! s:statusline_expr()
 "  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
 "  let ro  = "%{&readonly ? '[RO] ' : ''}"
@@ -195,7 +202,6 @@ set nohlsearch
 "  let pct = ' %P'
 "  return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
 "endfunction
-"
 "let &statusline = s:statusline_expr()
 
 "annoying temporary files
@@ -205,43 +211,18 @@ if v:version >= 703
   set undodir=/tmp//,.
 endif
 
-"remember last position opening a file
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |exe "normal! g`\"" | endif
-
 "underline urls | from https://gist.github.com/tobym/584909
 highlight Url_underline term=underline cterm=underline ctermbg=black
 match Url_underline 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*'
 
-"netrw file explorer settings
+"netrw file explorer settings (don't need nerdtree)
 let g:netrw_banner=0     "netrw disable banner
 let g:netrw_liststyle=3  "netrw tree view
 
 "misc
-match ErrorMsg '\s\+$'                                        "ressalta trailing whitespaces
+match ErrorMsg '\s\+$' "ressalta trailing whitespaces
 autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set ft=groff "groff files
 autocmd FileType * set formatoptions-=cro "desactivar auto comments
-
-"COPIATS SENSE SABER QUE FAN: TODO
-"set virtualedit=block
-"set shortmess=aT
-"set whichwrap=b,s
-"set nojoinspaces
-"set diffopt=filler,vertical
-"set grepformat=%f:%l:%c:%m,%f:%l:%m
-"set completeopt=menuone,preview
-"silent! set cryptmethod=blowfish2
-"if exists('&fixeol')
-  "set nofixeol
-"endif
-"set formatoptions+=1
-"if has('patch-7.3.541')
-  "set formatoptions+=j
-"endif
-"if has('patch-7.4.338')
-  "let &showbreak = '↳ '
-  "set breakindent
-  "set breakindentopt=sbr
-"endif
 
 " }}}
 " ============================================================================
@@ -252,7 +233,7 @@ autocmd FileType * set formatoptions-=cro "desactivar auto comments
 inoremap kj <Esc>
 cnoremap kj <C-c>
 
-"<space> circular windows navigation
+"circular windows navigation with space
 nnoremap <space> <C-w>w
 
 "make Y behave like other capitals
@@ -373,4 +354,4 @@ endfunction
 " ============================================================================
 filetype plugin off
 filetype indent off
-syntax enable
+syntax on
