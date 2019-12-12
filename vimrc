@@ -195,17 +195,20 @@ set nohlsearch
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |exe "normal! g`\"" | endif
 
 "custom status line
-" function! s:statusline_expr()
-"   let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
-"   let ro  = "%{&readonly ? '[RO] ' : ''}"
-"   let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
-"   let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
-"   let sep = ' %= '
-"   let pos = ' %-12(%l : %c%V%) '
-"   let pct = ' %P'
-"   return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
-" endfunction
-" let &statusline = s:statusline_expr()
+if !has('vim-airline')
+  function! s:statusline_expr()
+    let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+    let ro  = "%{&readonly ? '[RO] ' : ''}"
+    let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+    let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+    let sep = ' %= '
+    let pos = ' %-12(%l : %c%V%) '
+    let pct = ' %P'
+    return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+  endfunction
+  let &statusline = s:statusline_expr()
+  set laststatus=1
+endif
 
 "annoying temporary files
 set backupdir=/tmp//,.
