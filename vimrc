@@ -1,5 +1,4 @@
-" vim: set foldmethod=marker foldlevel=99 nomodeline:
-
+" vim: set foldmethod=marker foldlevel=0 nomodeline:
 " ============================================================================
 " LLUÍS BOSCH'S VIMRC {{{
 " ============================================================================
@@ -18,6 +17,16 @@ call plug#begin('~/.vim/plugged')
   "PROVANT:
   Plug 'bling/vim-airline'       "nice status bar
   Plug 'plasticboy/vim-markdown' "good markdown syntax
+
+  "LSP: (language server protocol)
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/async.vim'
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+  "LANGUAGES LSP:
+  Plug 'ryanolsonx/vim-lsp-javascript'
+  Plug 'ryanolsonx/vim-lsp-python'
 
   "COLORS:
   Plug 'tomasr/molokai'
@@ -80,13 +89,6 @@ call plug#begin('~/.vim/plugged')
   " disable signify by default
   let g:signify_disable_by_default = 1
 
-  " ----------------------------------------------------------------------------
-  " coc.nvim
-  " ----------------------------------------------------------------------------
-  " TODO (veure configuració més avall)
-  " ----------------------------------------------------------------------------
-  Plug 'neoclide/coc.nvim',{'branch':'release'}
-
 " plug#end() updates &runtimepath and initialize plugin system
 " automatically executes `filetype plugin indent` on and `syntax enable`.
 " Plugins become visible to Vim after this call.
@@ -102,7 +104,7 @@ call plug#end()
 
 "colors
 "colorscheme default
-"colorscheme molokai
+colorscheme molokai
 "colorscheme seoul256
 "colorscheme gruvbox
 "colorscheme tomorrow-night
@@ -120,6 +122,7 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
+set signcolumn=yes
 set colorcolumn=0               "80 110 línia vertical límit caràcters per línia
 set autoindent                  "set auto indent on
 set autoread                    "autoreload if it has been changed outside vim
@@ -192,17 +195,17 @@ set nohlsearch
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |exe "normal! g`\"" | endif
 
 "custom status line
-"function! s:statusline_expr()
-"  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
-"  let ro  = "%{&readonly ? '[RO] ' : ''}"
-"  let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
-"  let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
-"  let sep = ' %= '
-"  let pos = ' %-12(%l : %c%V%) '
-"  let pct = ' %P'
-"  return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
-"endfunction
-"let &statusline = s:statusline_expr()
+" function! s:statusline_expr()
+"   let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+"   let ro  = "%{&readonly ? '[RO] ' : ''}"
+"   let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+"   let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+"   let sep = ' %= '
+"   let pos = ' %-12(%l : %c%V%) '
+"   let pct = ' %P'
+"   return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+" endfunction
+" let &statusline = s:statusline_expr()
 
 "annoying temporary files
 set backupdir=/tmp//,.
@@ -216,8 +219,8 @@ highlight Url_underline term=underline cterm=underline ctermbg=black
 match Url_underline 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*'
 
 "netrw file explorer settings (don't need nerdtree)
-let g:netrw_banner=0     "netrw disable banner
-let g:netrw_liststyle=3  "netrw tree view
+let g:netrw_banner    = 0 "netrw disable banner
+let g:netrw_liststyle = 3 "netrw tree view
 
 "misc
 match ErrorMsg '\s\+$' "ressalta trailing whitespaces
@@ -253,18 +256,6 @@ cmap Wq wq
 map Q gq
 
 " ----------------------------------------------------------------------------
-" Mou línies amb CTRL-hjkl
-" ----------------------------------------------------------------------------
-nnoremap <silent> <C-k> :move-2<cr>
-nnoremap <silent> <C-j> :move+<cr>
-nnoremap <silent> <C-h> <<
-nnoremap <silent> <C-l> >>
-xnoremap <silent> <C-k> :move-2<cr>gv
-xnoremap <silent> <C-j> :move'>+<cr>gv
-xnoremap <silent> <C-h> <gv
-xnoremap <silent> <C-l> >gv
-
-" ----------------------------------------------------------------------------
 " Help in new tabs AND "q" for closing help
 " ----------------------------------------------------------------------------
 function! s:helptab()
@@ -274,6 +265,16 @@ function! s:helptab()
   endif
 endfunction
 autocmd BufEnter *.txt call s:helptab()
+
+" ----------------------------------------------------------------------------
+" "q" for closing terminal window (no funciona)
+" ----------------------------------------------------------------------------
+function! s:termtab()
+  if &buftype == 'terminal'
+    nnoremap <buffer> q :q<cr>
+  endif
+endfunction
+autocmd BufNewFile * call s:termtab()
 
 " }}}
 " ----------------------------------------------------------------------------
@@ -286,6 +287,8 @@ nnoremap <leader>f :FZF<cr>
 nnoremap <leader>c :Colors<cr>
 nnoremap <leader>g :SignifyToggle<cr>
 nnoremap <leader>n :Node<cr>
+nnoremap <leader>p :Python<cr>
+nnoremap <leader>b :Bash<cr>
 
 " NATIVE VIM LEADER MAPPINGS:
 nnoremap <leader>r        :source ~/dotfiles/vimrc<cr>
@@ -306,49 +309,58 @@ command! Mates          :tabnew ~/Desktop/mates        "obre carpeta matemàtiqu
 command! Bash           :w | :terminal bash %
 command! Node           :w | :terminal node %
 command! Python         :w | :terminal python3 %
-" }}}
-" ============================================================================
-" TEMPORAL {{{
-" ============================================================================
 
-" útil pel blog: convertir 'WORD' a '<inline>WORD</inline>'
+"convertir 'WORD' a <inline>'WORD'</inline>
 command! SurroundWordWithInlineHTMLTag normal Bi<inline><esc>Ea</inline><esc>
 nnoremap <leader>i :SurroundWordWithInlineHTMLTag<cr>
 
 " }}}
 " ============================================================================
-" COC.NVIM configuration {{{
+" AUTOCOMPLETE CONFIG {{{
 " ============================================================================
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+let g:asyncomplete_auto_popup = 1
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ asyncomplete#force_refresh()
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+" }}}
+" ============================================================================
+" LSP SERVERS LANGUAGES CONFIG {{{
+" ============================================================================
+
+"REGISTER PYTHON LSP:
+" pip install python-language-server
+if executable('pyls')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'pyls',
+    \ 'cmd': {server_info->['pyls']},
+    \ 'whitelist': ['python'],
+    \ })
+endif
+
+"REGISTER JAVASCRIPT LSP:
+" npm -g install typescript typescript-language-server
+if executable('typescript-language-server')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'javascript support using typescript-language-server',
+    \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+    \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+    \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
+    \ })
+endif
 
 " }}}
 " ============================================================================
