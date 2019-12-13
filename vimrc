@@ -1,4 +1,4 @@
-" vim: set foldmethod=marker foldlevel=0 nomodeline:
+" vim: set foldmethod=marker foldlevel=999 nomodeline:
 " ============================================================================
 " LLUÍS BOSCH'S VIMRC {{{
 " ============================================================================
@@ -25,8 +25,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
   "LANGUAGES LSP:
-  Plug 'ryanolsonx/vim-lsp-javascript'
-  Plug 'ryanolsonx/vim-lsp-python'
+  "Plug 'ryanolsonx/vim-lsp-javascript'
+  "Plug 'ryanolsonx/vim-lsp-python'
 
   "COLORS:
   Plug 'tomasr/molokai'
@@ -321,30 +321,42 @@ nnoremap <leader>i :SurroundWordWithInlineHTMLTag<cr>
 " ============================================================================
 " AUTOCOMPLETE CONFIG {{{
 " ============================================================================
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 
-let g:asyncomplete_auto_popup = 1
+"MAPPINGS: per autocomplete / interacció amb pop up menu
 
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
+"1. tecla TAB fa CTRL+n
 inoremap <silent><expr> <TAB>
   \ pumvisible() ? "\<C-n>" :
   \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
+  \ <SID>type_Cn_and_refresh()
 
+"2. tecla Shift+TAB fa CTRL+p
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+"3. tecla Enter
+inoremap <expr><cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+"auto complete per defecte
+let g:asyncomplete_auto_popup = 1
+
+"funcions helper pels mappings anteriors
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+"retorna string '\<C-n>' i fa refresh
+function! s:type_Cn_and_refresh() abort
+  call asyncomplete#force_refresh()
+  return "\<C-n>"
+endfunction
 
 " }}}
 " ============================================================================
 " LSP SERVERS LANGUAGES CONFIG {{{
 " ============================================================================
 
-"REGISTER PYTHON LSP:
+"REGISTER PYTHON LSP: (pyls)
 " pip install python-language-server
 if executable('pyls')
   au User lsp_setup call lsp#register_server({
@@ -354,8 +366,9 @@ if executable('pyls')
     \ })
 endif
 
-"REGISTER JAVASCRIPT LSP:
+"REGISTER JAVASCRIPT LSP: (typescript-language-server)
 " npm -g install typescript typescript-language-server
+" perquè funcioni amb javascript és necessari tenir un arxiu "package.json"
 if executable('typescript-language-server')
   au User lsp_setup call lsp#register_server({
     \ 'name': 'javascript support using typescript-language-server',
