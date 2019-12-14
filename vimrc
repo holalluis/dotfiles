@@ -1,4 +1,4 @@
-" vim: set foldmethod=marker foldlevel=999 nomodeline:
+" vim: set foldmethod=marker foldlevel=99 nomodeline:
 " ============================================================================
 " LLUÍS BOSCH'S VIMRC {{{
 " ============================================================================
@@ -13,7 +13,6 @@
 " PLUGINS (VIM-PLUG MANAGER) {{{
 " ============================================================================
 call plug#begin('~/.vim/plugged')
-
   "PROVANT:
   Plug 'bling/vim-airline'       "nice status bar
   Plug 'plasticboy/vim-markdown' "good markdown syntax
@@ -122,7 +121,6 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
-set signcolumn=yes
 set colorcolumn=0               "80 110 línia vertical límit caràcters per línia
 set autoindent                  "set auto indent on
 set autoread                    "autoreload if it has been changed outside vim
@@ -165,8 +163,10 @@ set synmaxcol=1000              "maxima columna per renderitzar sintaxi
 set complete-=i                 "completion with CTRL-N and CTRL-P
 set complete=.,w,b,u,t
 
+"settings for vim only (not nvim)
 if !has('nvim')
   set ttymouse=xterm2 "vim mouse support for tmux
+  set signcolumn=yes
 endif
 
 "clipboard (mac and linux)
