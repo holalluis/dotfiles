@@ -14,7 +14,7 @@
 " ============================================================================
 call plug#begin('~/.vim/plugged')
   "PROVANT:
-  Plug 'bling/vim-airline'       "nice status bar
+  "Plug 'bling/vim-airline'       "nice status bar
   Plug 'plasticboy/vim-markdown' "good markdown syntax
 
   "LSP: (language server protocol)
@@ -324,28 +324,28 @@ nnoremap <leader>i :SurroundWordWithInlineHTMLTag<cr>
 
 "MAPPINGS: per autocomplete / interacció amb pop up menu
 
-"1. tecla TAB fa CTRL+n
+"1. TAB does CTRL+n
 inoremap <silent><expr> <TAB>
   \ pumvisible() ? "\<C-n>" :
   \ <SID>check_back_space() ? "\<TAB>" :
   \ <SID>type_Cn_and_refresh()
 
-"2. tecla Shift+TAB fa CTRL+p
+"2. Shift+TAB does CTRL+p
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-"3. tecla Enter
+"3. Enter accepts selection from popup menu
 inoremap <expr><cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-"auto complete per defecte
+"auto complete by default?
 let g:asyncomplete_auto_popup = 1
 
-"funcions helper pels mappings anteriors
+"helper for previous mappings
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-"retorna string '\<C-n>' i fa refresh
+"return string '\<C-n>' and refresehes asyncomplete
 function! s:type_Cn_and_refresh() abort
   call asyncomplete#force_refresh()
   return "\<C-n>"
