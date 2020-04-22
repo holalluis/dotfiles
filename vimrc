@@ -322,19 +322,19 @@ nnoremap <leader>i :SurroundWordWithInlineHTMLTag<cr>
 
 "MAPPINGS: per autocomplete / interacció amb pop up menu
 
-"1. tecla TAB fa CTRL+n
+"1. TAB does CTRL+n
 inoremap <silent><expr> <TAB>
   \ pumvisible() ? "\<C-n>" :
   \ <SID>check_back_space() ? "\<TAB>" :
   \ <SID>type_Cn_and_refresh()
 
-"funcions helper pels mappings anteriors
+"funcions helper pel mapping anterior
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-"retorna string '\<C-n>' i fa refresh
+"return string '\<C-n>' and refresehes asyncomplete
 function! s:type_Cn_and_refresh() abort
 "  call asyncomplete#force_refresh()
   return "\<C-n>"
