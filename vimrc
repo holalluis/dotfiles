@@ -9,29 +9,35 @@
 "   alias vimrc='vim ~/dotfiles/vimrc'
 
 " }}}
+
+"provant:
+"canviar tamany finestres
+nnoremap ,+ <c-w>>
+nnoremap ,- <c-w><
+
 " ============================================================================
 " PLUGINS (VIM-PLUG MANAGER) {{{
 " ============================================================================
 call plug#begin('~/.vim/plugged')
   "PROVANT:
-  Plug 'bling/vim-airline'       "nice status bar
+  "Plug 'bling/vim-airline'       "nice status bar
   Plug 'plasticboy/vim-markdown' "good markdown syntax
-
-  "LSP: (language server protocol)
-  Plug 'prabirshrestha/asyncomplete.vim'
-  Plug 'prabirshrestha/async.vim'
-  Plug 'prabirshrestha/vim-lsp'
-  Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
-  "LANGUAGES LSP:
-  "Plug 'ryanolsonx/vim-lsp-javascript'
-  "Plug 'ryanolsonx/vim-lsp-python'
 
   "COLORS:
   Plug 'tomasr/molokai'
   Plug 'chriskempson/vim-tomorrow-theme'
   Plug 'junegunn/seoul256.vim'
   Plug 'morhetz/gruvbox'
+
+  "LSP: (language server protocol)
+  "Plug 'prabirshrestha/asyncomplete.vim'
+  "Plug 'prabirshrestha/async.vim'
+  "Plug 'prabirshrestha/vim-lsp'
+  "Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+  "LANGUAGES LSP:
+  "Plug 'ryanolsonx/vim-lsp-javascript'
+  "Plug 'ryanolsonx/vim-lsp-python'
 
   " ----------------------------------------------------------------------------
   " fzf     powerful fuzzy finder
@@ -55,7 +61,7 @@ call plug#begin('~/.vim/plugged')
   " :Marks    lists marks
   " :Ag       not sure exactly --> https://github.com/ggreer/the_silver_searcher
   " ----------------------------------------------------------------------------
-  Plug 'junegunn/fzf.vim'
+  " Plug 'junegunn/fzf.vim'
 
   " ----------------------------------------------------------------------------
   " goyo.vim + limelight.vim | distraction free writing
@@ -74,8 +80,8 @@ call plug#begin('~/.vim/plugged')
   " :Gdiff
   " :Gbrowse
   " ----------------------------------------------------------------------------
-  Plug 'tpope/vim-fugitive'
-  Plug 'tpope/vim-rhubarb'
+  "Plug 'tpope/vim-fugitive'
+  "Plug 'tpope/vim-rhubarb'
 
   " ----------------------------------------------------------------------------
   " vim-signify | live git diff
@@ -84,9 +90,9 @@ call plug#begin('~/.vim/plugged')
   " :SignifyDisable
   " :SignifyToggle
   " ----------------------------------------------------------------------------
-  Plug 'mhinz/vim-signify'
+  "Plug 'mhinz/vim-signify'
   " disable signify by default
-  let g:signify_disable_by_default = 1
+  "let g:signify_disable_by_default = 1
 
 " plug#end() updates &runtimepath and initialize plugin system
 " automatically executes `filetype plugin indent` on and `syntax enable`.
@@ -103,7 +109,7 @@ call plug#end()
 
 "colors
 "colorscheme default
-colorscheme molokai
+"colorscheme molokai
 "colorscheme seoul256
 "colorscheme gruvbox
 "colorscheme tomorrow-night
@@ -121,13 +127,14 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
+set guioptions=                 "sense scrollbar al macvim
 set colorcolumn=0               "80 110 línia vertical límit caràcters per línia
 set autoindent                  "set auto indent on
 set autoread                    "autoreload if it has been changed outside vim
 set backspace=indent,eol,start  "backspace normal
 set clipboard=unnamed           "system clipboard
 set encoding=utf-8
-set ignorecase smartcase        "ignores case searching when lowercase only
+set noignorecase nosmartcase    "do not ignore case searching
 set laststatus=2                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
 set lazyredraw
 set listchars=eol:$             "makes 'set list' look prettier
@@ -166,7 +173,7 @@ set complete=.,w,b,u,t
 "settings for vim only (not nvim)
 if !has('nvim')
   set ttymouse=xterm2 "vim mouse support for tmux
-  set signcolumn=yes
+  set signcolumn=no
 endif
 
 "clipboard (mac and linux)
@@ -192,23 +199,23 @@ set nohidden                    "navega per arxius sense haver de guardar canvis
 set nohlsearch
 
 "remember last position opening a file
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |exe "normal! g`\"" | endif
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 "custom status line
-if !has('vim-airline')
-  function! s:statusline_expr()
-    let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
-    let ro  = "%{&readonly ? '[RO] ' : ''}"
-    let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
-    let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
-    let sep = ' %= '
-    let pos = ' %-12(%l : %c%V%) '
-    let pct = ' %P'
-    return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
-  endfunction
-  let &statusline = s:statusline_expr()
-  set laststatus=1
-endif
+" if !has('vim-airline')
+"   function! s:statusline_expr()
+"     let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+"     let ro  = "%{&readonly ? '[RO] ' : ''}"
+"     let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+"     let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+"     let sep = ' %= '
+"     let pos = ' %-12(%l : %c%V%) '
+"     let pct = ' %P'
+"     return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+"   endfunction
+"   let &statusline = s:statusline_expr()
+"   set laststatus=1
+" endif
 
 "annoying temporary files
 set backupdir=/tmp//,.
@@ -234,6 +241,9 @@ autocmd FileType * set formatoptions-=cro "desactivar auto comments
 " ============================================================================
 " NON-LEADER KEY MAPPINGS {{{
 " ============================================================================
+
+"buscar centrant
+nnoremap n nzz
 
 "kj escaping
 inoremap kj <Esc>
@@ -269,35 +279,23 @@ function! s:helptab()
 endfunction
 autocmd BufEnter *.txt call s:helptab()
 
-" ----------------------------------------------------------------------------
-" "q" for closing terminal window (no funciona)
-" ----------------------------------------------------------------------------
-function! s:termtab()
-  if &buftype == 'terminal'
-    nnoremap <buffer> q :q<cr>
-  endif
-endfunction
-autocmd BufNewFile * call s:termtab()
-
 " }}}
 " ----------------------------------------------------------------------------
 " LEADER KEY MAPPINGS {{{
 " ----------------------------------------------------------------------------
 let mapleader=','
 
-" PLUGIN LEADER MAPPINGS:
-nnoremap <leader>f :FZF<cr>
-nnoremap <leader>c :Colors<cr>
-nnoremap <leader>g :SignifyToggle<cr>
-nnoremap <leader>n :Node<cr>
-nnoremap <leader>p :Python<cr>
-nnoremap <leader>b :Bash<cr>
-
 " NATIVE VIM LEADER MAPPINGS:
 nnoremap <leader>r        :source ~/dotfiles/vimrc<cr>
 nnoremap <leader>s        :syntax sync fromstart<cr>
 nnoremap <leader><leader> :e#<cr>
 nnoremap <leader>m        :make -k -j4<cr><cr>
+
+" PLUGIN LEADER MAPPINGS:
+nnoremap <leader>f :FZF<cr>
+nnoremap <leader>n :Node<cr>
+nnoremap <leader>p :Python<cr>
+nnoremap <leader>b :Bash<cr>
 
 " }}}
 " ============================================================================
@@ -310,7 +308,7 @@ command! Org            :tabnew ~/Dropbox/org/lluis.md "open org file in a new t
 command! Apunts         :tabnew ~/Desktop/apunts       "obre carpeta apunts
 command! Mates          :tabnew ~/Desktop/mates        "obre carpeta matemàtiques
 command! Bash           :w | :terminal bash %
-command! Node           :w | :terminal node %
+command! Node           :w | :vertical :terminal node %
 command! Python         :w | :terminal python3 %
 
 "convertir 'WORD' a <inline>'WORD'</inline>
@@ -330,15 +328,6 @@ inoremap <silent><expr> <TAB>
   \ <SID>check_back_space() ? "\<TAB>" :
   \ <SID>type_Cn_and_refresh()
 
-"2. tecla Shift+TAB fa CTRL+p
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-"3. tecla Enter
-inoremap <expr><cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-"auto complete per defecte
-let g:asyncomplete_auto_popup = 1
-
 "funcions helper pels mappings anteriors
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -347,9 +336,15 @@ endfunction
 
 "retorna string '\<C-n>' i fa refresh
 function! s:type_Cn_and_refresh() abort
-  call asyncomplete#force_refresh()
+"  call asyncomplete#force_refresh()
   return "\<C-n>"
 endfunction
+
+"2. tecla Shift+TAB fa CTRL+p
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+"3. tecla Enter
+inoremap <expr><cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " }}}
 " ============================================================================
@@ -358,28 +353,29 @@ endfunction
 
 "REGISTER PYTHON LSP: (pyls)
 " pip install python-language-server
-if executable('pyls')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'pyls',
-    \ 'cmd': {server_info->['pyls']},
-    \ 'whitelist': ['python'],
-    \ })
-endif
+"if executable('pyls')
+"  au User lsp_setup call lsp#register_server({
+"    \ 'name': 'pyls',
+"    \ 'cmd': {server_info->['pyls']},
+"    \ 'whitelist': ['python'],
+"    \ })
+"endif
 
 "REGISTER JAVASCRIPT LSP: (typescript-language-server)
 " npm -g install typescript typescript-language-server
 " perquè funcioni amb javascript és necessari tenir un arxiu "package.json"
-if executable('typescript-language-server')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'javascript support using typescript-language-server',
-    \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-    \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
-    \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
-    \ })
-endif
+"if executable('typescript-language-server')
+"  au User lsp_setup call lsp#register_server({
+"    \ 'name': 'javascript support using typescript-language-server',
+"    \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+"    \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+"    \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
+"    \ })
+"endif
 
 " }}}
 " ============================================================================
 filetype plugin off
 filetype indent off
 syntax on
+set showcmd
