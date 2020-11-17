@@ -7,27 +7,24 @@
 " compatible with macOs & linux
 " useful bash alias:
 "   alias vimrc='vim ~/dotfiles/vimrc'
-
 " }}}
-
-"provant:
-"canviar tamany finestres
-nnoremap ,+ <c-w>>
-nnoremap ,- <c-w><
 
 " ============================================================================
 " PLUGINS (VIM-PLUG MANAGER) {{{
 " ============================================================================
 call plug#begin('~/.vim/plugged')
   "PROVANT:
-  "Plug 'bling/vim-airline'       "nice status bar
-  Plug 'plasticboy/vim-markdown' "good markdown syntax
+  Plug 'godlygeek/tabular'
 
   "COLORS:
+  Plug 'lifepillar/vim-solarized8'
   Plug 'tomasr/molokai'
   Plug 'chriskempson/vim-tomorrow-theme'
   Plug 'junegunn/seoul256.vim'
   Plug 'morhetz/gruvbox'
+
+  "SYNTAX:
+  Plug 'plasticboy/vim-markdown' "good markdown syntax
 
   "LSP: (language server protocol)
   "Plug 'prabirshrestha/asyncomplete.vim'
@@ -38,6 +35,9 @@ call plug#begin('~/.vim/plugged')
   "LANGUAGES LSP:
   "Plug 'ryanolsonx/vim-lsp-javascript'
   "Plug 'ryanolsonx/vim-lsp-python'
+
+  "STATUS BAR:
+  "Plug 'vim-airline/vim-airline'
 
   " ----------------------------------------------------------------------------
   " fzf     powerful fuzzy finder
@@ -64,7 +64,7 @@ call plug#begin('~/.vim/plugged')
   " Plug 'junegunn/fzf.vim'
 
   " ----------------------------------------------------------------------------
-  " goyo.vim + limelight.vim | distraction free writing
+  " goyo.vim + limelight.vim | 2 plugins for distraction free writing
   " ----------------------------------------------------------------------------
   " :Goyo         toggle goyo
   " :Limelight    start limelight
@@ -103,16 +103,14 @@ call plug#end()
 " ============================================================================
 " BASIC SETTINGS {{{
 " ============================================================================
-" activar:    'set option'
-" desactivar: 'set nooption'
-" ============================================================================
 
 "colors
+colorscheme molokai
 "colorscheme default
-"colorscheme molokai
 "colorscheme seoul256
 "colorscheme gruvbox
-"colorscheme tomorrow-night
+"colorscheme Tomorrow-Night
+"set background=dark | colorscheme solarized8
 
 if has('nvim')
   set termguicolors
@@ -127,7 +125,7 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
-set guioptions=                 "sense scrollbar al macvim
+set guioptions=                 "no scrollbar in macvim
 set colorcolumn=0               "80 110 línia vertical límit caràcters per línia
 set autoindent                  "set auto indent on
 set autoread                    "autoreload if it has been changed outside vim
@@ -136,7 +134,7 @@ set clipboard=unnamed           "system clipboard
 set encoding=utf-8
 set noignorecase nosmartcase    "do not ignore case searching
 set laststatus=2                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
-set lazyredraw
+set nolazyredraw
 set listchars=eol:$             "makes 'set list' look prettier
 set modeline
 set modelines=5                 "modeline/modelines (:help modeline)
@@ -159,14 +157,16 @@ set foldignore=                 "per defecte s'ignora caràcter '#' per folding,
 set foldlevel=10                "inicialment folds oberts
 set foldmethod=indent           "manera de plegar text
 set mouse=a                     "mouse support
+
 set shiftround                  "use multiple of shiftwidth when indenting with '<' and '>'
 set shiftwidth=2                "number of space character to use for indent
 set smarttab                    "esborra tab amb <BS>
 set tabstop=2                   "width of tab character
-set expandtab smarttab          "insert spaces instead of tab
+set expandtab                   "insert spaces instead of tab
+
 set foldlevelstart=99
 set ttyfast                     "removed in neovim
-set synmaxcol=1000              "maxima columna per renderitzar sintaxi
+set synmaxcol=3000              "maxima columna per renderitzar sintaxi
 set complete-=i                 "completion with CTRL-N and CTRL-P
 set complete=.,w,b,u,t
 
@@ -202,20 +202,20 @@ set nohlsearch
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 "custom status line
-" if !has('vim-airline')
-"   function! s:statusline_expr()
-"     let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
-"     let ro  = "%{&readonly ? '[RO] ' : ''}"
-"     let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
-"     let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
-"     let sep = ' %= '
-"     let pos = ' %-12(%l : %c%V%) '
-"     let pct = ' %P'
-"     return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
-"   endfunction
-"   let &statusline = s:statusline_expr()
-"   set laststatus=1
-" endif
+"if !has('vim-airline')
+"  function! s:statusline_expr()
+"    let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+"    let ro  = "%{&readonly ? '[RO] ' : ''}"
+"    let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+"    let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+"    let sep = ' %= '
+"    let pos = ' %-12(%l : %c%V%) '
+"    let pct = ' %P'
+"    return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+"  endfunction
+"  let &statusline = s:statusline_expr()
+"  set laststatus=1
+"endif
 
 "annoying temporary files
 set backupdir=/tmp//,.
@@ -236,11 +236,16 @@ let g:netrw_liststyle = 3 "netrw tree view
 match ErrorMsg '\s\+$' "ressalta trailing whitespaces
 autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set ft=groff "groff files
 autocmd FileType * set formatoptions-=cro "desactivar auto comments
+autocmd BufEnter Makefile set noexpandtab
 
 " }}}
 " ============================================================================
 " NON-LEADER KEY MAPPINGS {{{
 " ============================================================================
+
+if !has('nvim')
+  tmap <esc> <c-w>N
+endif
 
 "buscar centrant
 nnoremap n nzz
@@ -279,6 +284,7 @@ function! s:helptab()
 endfunction
 autocmd BufEnter *.txt call s:helptab()
 
+
 " }}}
 " ----------------------------------------------------------------------------
 " LEADER KEY MAPPINGS {{{
@@ -289,13 +295,20 @@ let mapleader=','
 nnoremap <leader>r        :source ~/dotfiles/vimrc<cr>
 nnoremap <leader>s        :syntax sync fromstart<cr>
 nnoremap <leader><leader> :e#<cr>
-nnoremap <leader>m        :make -k -j4<cr><cr>
+nnoremap <leader>m        :make -k -j4<cr><cr><cr>
+nnoremap <leader>e        :Lexplore<cr>
+nnoremap <leader>t :vertical terminal<cr>
+
+nnoremap <leader>h        :set ft=html<cr>
+nnoremap <leader>j        :set ft=javascript<cr>
+nnoremap <leader>c        :set ft=css<cr>
 
 " PLUGIN LEADER MAPPINGS:
-nnoremap <leader>f :FZF<cr>
-nnoremap <leader>n :Node<cr>
-nnoremap <leader>p :Python<cr>
-nnoremap <leader>b :Bash<cr>
+nnoremap <leader>f  :FZF<cr>
+nnoremap <leader>n  :Node<cr>
+nnoremap <leader>p  :Python<cr>
+nnoremap <leader>b  :Bash<cr>
+nnoremap <leader>gs :Gstatus<cr>
 
 " }}}
 " ============================================================================
@@ -308,8 +321,9 @@ command! Org            :tabnew ~/Dropbox/org/lluis.md "open org file in a new t
 command! Apunts         :tabnew ~/Desktop/apunts       "obre carpeta apunts
 command! Mates          :tabnew ~/Desktop/mates        "obre carpeta matemàtiques
 command! Bash           :w | :terminal bash %
-command! Node           :w | :vertical :terminal node %
+command! Node           :w | :belowright :terminal node %
 command! Python         :w | :terminal python3 %
+command! Vs             :vs | :FZF
 
 "convertir 'WORD' a <inline>'WORD'</inline>
 command! SurroundWordWithInlineHTMLTag normal Bi<inline><esc>Ea</inline><esc>
@@ -341,10 +355,9 @@ function! s:type_Cn_and_refresh() abort
 endfunction
 
 "2. tecla Shift+TAB fa CTRL+p
+"3. tecla Enter accepta opcio del pop up menu
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-"3. tecla Enter
-inoremap <expr><cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr><cr>    pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " }}}
 " ============================================================================
@@ -374,6 +387,22 @@ inoremap <expr><cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 "endif
 
 " }}}
+" ============================================================================
+" TABULARIZE PLUGIN and tpope gist
+" ============================================================================
+" https://gist.github.com/tpope/287147
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+
 " ============================================================================
 filetype plugin off
 filetype indent off
