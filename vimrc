@@ -8,13 +8,14 @@
 " useful bash alias:
 "   alias vimrc='vim ~/dotfiles/vimrc'
 " }}}
-
 " ============================================================================
 " PLUGINS (VIM-PLUG MANAGER) {{{
 " ============================================================================
 call plug#begin('~/.vim/plugged')
   "PROVANT:
   Plug 'godlygeek/tabular'
+  Plug 'yegappan/taglist'
+  Plug 'vim/killersheep'
 
   "COLORS:
   Plug 'lifepillar/vim-solarized8'
@@ -104,13 +105,49 @@ call plug#end()
 " BASIC SETTINGS {{{
 " ============================================================================
 
+"use :Man <program>
+runtime ftplugin/man.vim
+
+"for the :find command
+set path+=**
+
+"executar comanda a bash amb la funció '='
+"set equalprg=bash
+set equalprg=
+
+"executar comanda bash i enganxar output a sota (inspirat per acme text editor)
+nnoremap gb :call Executa_linia_actual_a_bash()<CR>
+function! Executa_linia_actual_a_bash()
+  normal yy
+  ":tabnew
+  ".nnoremap <buffer> q :q!<cr>
+  normal p
+  :.!bash
+endfunction
+
+"obrir links sota el cursor
+"test: https://github.com/holalluis
+nnoremap gx :call HandleURL_for_WSL()<CR>
+function! HandleURL_for_WSL()
+  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;()]*')
+  let s:uri = shellescape(s:uri, 1)
+  echom s:uri
+  if s:uri != ""
+    silent exec "!bash /home/lluis/bin/open_url.sh '".s:uri."'"
+    :redraw!
+  else
+    echo "No URI found in line."
+  endif
+endfunction
+
 "colors
-colorscheme molokai
+"set background=dark
 "colorscheme default
+colorscheme molokai
 "colorscheme seoul256
 "colorscheme gruvbox
 "colorscheme Tomorrow-Night
-"set background=dark | colorscheme solarized8
+"colorscheme solarized8_high
 
 if has('nvim')
   set termguicolors
@@ -125,50 +162,45 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
-set guioptions=                 "no scrollbar in macvim
-set colorcolumn=0               "80 110 línia vertical límit caràcters per línia
 set autoindent                  "set auto indent on
 set autoread                    "autoreload if it has been changed outside vim
 set backspace=indent,eol,start  "backspace normal
-set clipboard=unnamed           "system clipboard
-set encoding=utf-8
-set noignorecase nosmartcase    "do not ignore case searching
-set laststatus=2                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
-set nolazyredraw
-set listchars=eol:$             "makes 'set list' look prettier
-set modeline
-set modelines=5                 "modeline/modelines (:help modeline)
-set nrformats=bin,hex           "C-a suma decimals i hexadecimals correctament "test: 0b0110001 63 0x4d
-set number                      "show line number
-set scrolloff=0                 "minimal number of screen lines to keep above and below the cursor (scroll offset)
-set showcmd                     "mostra quina comanda estas escribint a baix a la dreta
-set tags=tags                   "ctags(1) file
-set textwidth=0
-set timeoutlen=500              "timeout for commands
-set visualbell
-set wildmenu                    "display all matching files in tab complete
-set wildmode=full
-set equalalways                 "resize windows when opening new ones
-set updatetime=100
 set belloff=all                 "never ring bell
-set display=lastline            "display @@@ at the end of long lines
+set clipboard=unnamed           "system clipboard
+set colorcolumn=0               "80 110 línia vertical límit caràcters per línia
+set complete-=i                 "completion with CTRL-N and CTRL-P
+set complete=.,w,b,u,t
+set encoding=utf-8
+set equalalways                 "resize windows when opening new ones
+set expandtab                   "insert spaces instead of tab
 set foldcolumn=0                "valors: 0 a 12, informació lateral sobre folds
 set foldignore=                 "per defecte s'ignora caràcter '#' per folding, plega'l correctament (útil per CSS)
 set foldlevel=10                "inicialment folds oberts
+set foldlevelstart=99
 set foldmethod=indent           "manera de plegar text
+set guioptions=                 "no scrollbar in macvim
+set laststatus=2                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
+set listchars=eol:$             "makes 'set list' look prettier
+set modeline
+set modelines=5                 "modeline/modelines (:help modeline)
 set mouse=a                     "mouse support
-
+set nrformats=bin,hex           "C-a suma decimals i hexadecimals correctament "test: 0b0110001 63 0x4d
+set number                      "show line number
+set scrolloff=0                 "minimal number of screen lines to keep above and below the cursor (scroll offset)
 set shiftround                  "use multiple of shiftwidth when indenting with '<' and '>'
 set shiftwidth=2                "number of space character to use for indent
+set showcmd                     "mostra quina comanda estas escribint a baix a la dreta
 set smarttab                    "esborra tab amb <BS>
-set tabstop=2                   "width of tab character
-set expandtab                   "insert spaces instead of tab
-
-set foldlevelstart=99
-set ttyfast                     "removed in neovim
 set synmaxcol=3000              "maxima columna per renderitzar sintaxi
-set complete-=i                 "completion with CTRL-N and CTRL-P
-set complete=.,w,b,u,t
+set tabstop=2                   "width of tab character
+set tags=tags                   "ctags(1) file
+set textwidth=0
+set timeoutlen=500              "timeout for commands
+set ttyfast                     "removed in neovim
+set updatetime=100
+set visualbell
+set wildmenu                    "display all matching files in tab complete
+set wildmode=full
 
 "settings for vim only (not nvim)
 if !has('nvim')
@@ -185,18 +217,21 @@ endif
 
 "DESACTIVATS:
 set nocompatible                "removed in neovim
-set nolist                      "see invisible characters
-set nostartofline               "keep the cursor on the same column
-set nocursorline                "ilumina linia on hi ha el cursor
 set nocursorcolumn              "ilumina columna on hi ha el cursor
+set nocursorline                "ilumina linia on hi ha el cursor
+set nohidden                    "navega per arxius sense haver de guardar canvis
+set nohlsearch
+set noignorecase
+set noincsearch                 "incremental search
+set nolazyredraw
+set nolist                      "see invisible characters
 set nopaste                     "prevents insert paste mode (fa coses rares)
 set norelativenumber            "no relative number for line number
 set noruler                     "show position always (no m'agrada)
-set nowrap                      "les linies que surten de la pantalla no es veuen               asldkfj                                   alsdkfj                         laskdjfklj
+set nosmartcase
 set nosmartindent
-set noincsearch                 "incremental search
-set nohidden                    "navega per arxius sense haver de guardar canvis
-set nohlsearch
+set nostartofline               "keep the cursor on the same column
+set nowrap                      "les linies que surten de la pantalla no es veuen               asldkfj                                   alsdkfj                         laskdjfklj
 
 "remember last position opening a file
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
@@ -229,13 +264,19 @@ highlight Url_underline term=underline cterm=underline ctermbg=black
 match Url_underline 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*'
 
 "netrw file explorer settings (don't need nerdtree)
-let g:netrw_banner    = 0 "netrw disable banner
+let g:netrw_banner    = 1 "netrw banner (0 to disable, 1 enable)
 let g:netrw_liststyle = 3 "netrw tree view
 
-"misc
-match ErrorMsg '\s\+$' "ressalta trailing whitespaces
-autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set ft=groff "groff files
-autocmd FileType * set formatoptions-=cro "desactivar auto comments
+"ressalta trailing whitespaces a final de línia
+match ErrorMsg '\s\+$'
+
+"syntax for groff files
+autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set ft=groff
+
+"desactivar auto comments
+autocmd FileType * set formatoptions-=cro
+
+"no posar espais als makefiles
 autocmd BufEnter Makefile set noexpandtab
 
 " }}}
@@ -243,6 +284,7 @@ autocmd BufEnter Makefile set noexpandtab
 " NON-LEADER KEY MAPPINGS {{{
 " ============================================================================
 
+"escape terminal mode
 if !has('nvim')
   tmap <esc> <c-w>N
 endif
@@ -254,7 +296,7 @@ nnoremap n nzz
 inoremap kj <Esc>
 cnoremap kj <C-c>
 
-"circular windows navigation with space
+"navegar per les finestres apretant espai
 nnoremap <space> <C-w>w
 
 "make Y behave like other capitals
@@ -267,10 +309,10 @@ nnoremap p ]p
 nnoremap j gj
 nnoremap k gk
 
-" I type Wq more often than wq
+"I type Wq more often than wq: remap typo
 cmap Wq wq
 
-" Don't use Ex mode, use Q for formatting
+"Don't use Ex mode, use Q for formatting
 map Q gq
 
 " ----------------------------------------------------------------------------
@@ -284,7 +326,6 @@ function! s:helptab()
 endfunction
 autocmd BufEnter *.txt call s:helptab()
 
-
 " }}}
 " ----------------------------------------------------------------------------
 " LEADER KEY MAPPINGS {{{
@@ -292,23 +333,37 @@ autocmd BufEnter *.txt call s:helptab()
 let mapleader=','
 
 " NATIVE VIM LEADER MAPPINGS:
-nnoremap <leader>r        :source ~/dotfiles/vimrc<cr>
-nnoremap <leader>s        :syntax sync fromstart<cr>
-nnoremap <leader><leader> :e#<cr>
-nnoremap <leader>m        :make -k -j4<cr><cr><cr>
 nnoremap <leader>e        :Lexplore<cr>
-nnoremap <leader>t :vertical terminal<cr>
+nnoremap <leader>m        :make -k -j4<cr><cr>
+nnoremap <leader>s        :syntax sync fromstart<cr>
+nnoremap <leader>r        :source ~/dotfiles/vimrc<cr>
+nnoremap <leader><leader> :e#<cr>
 
 nnoremap <leader>h        :set ft=html<cr>
 nnoremap <leader>j        :set ft=javascript<cr>
 nnoremap <leader>c        :set ft=css<cr>
 
-" PLUGIN LEADER MAPPINGS:
-nnoremap <leader>f  :FZF<cr>
-nnoremap <leader>n  :Node<cr>
-nnoremap <leader>p  :Python<cr>
-nnoremap <leader>b  :Bash<cr>
-nnoremap <leader>gs :Gstatus<cr>
+"compilar i executar rust project
+nnoremap <leader>c :CargoRun<cr>
+command! CargoRun :w | :terminal cargo run
+
+"executar arxiu python
+nnoremap <leader>p :Python<cr>
+command! Python :w | :belowright :terminal python3 %
+
+"executar arxiu javascript
+nnoremap <leader>n :Node<cr>
+command! Node :w | :belowright :terminal node %
+
+"executar shell script
+nnoremap <leader>b :Bash<cr>
+command! Bash :w | :terminal bash %
+
+"FZF fuzzy file finder (junegunn/fzf)
+nnoremap <leader>f :FZF<cr>
+
+"Taglist plugin (yegappan/taglist)
+nnoremap <leader>t :TlistToggle<cr>
 
 " }}}
 " ============================================================================
@@ -316,13 +371,7 @@ nnoremap <leader>gs :Gstatus<cr>
 " custom ex commands start with capital letter
 " ----------------------------------------------------------------------------
 command! TrimWhitespace :keeppatterns %s/\s\+$//e
-command! Vimrc          :tabnew ~/dotfiles/vimrc       "edit vimrc in a new tab
-command! Org            :tabnew ~/Dropbox/org/lluis.md "open org file in a new tab
-command! Apunts         :tabnew ~/Desktop/apunts       "obre carpeta apunts
-command! Mates          :tabnew ~/Desktop/mates        "obre carpeta matemàtiques
-command! Bash           :w | :terminal bash %
-command! Node           :w | :belowright :terminal node %
-command! Python         :w | :terminal python3 %
+command! Vimrc          :tabnew ~/dotfiles/vimrc "edit vimrc in a new tab
 command! Vs             :vs | :FZF
 
 "convertir 'WORD' a <inline>'WORD'</inline>
@@ -348,7 +397,7 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-"return string '\<C-n>' and refresehes asyncomplete
+"return string '\<C-n>' and refresh asyncomplete
 function! s:type_Cn_and_refresh() abort
 "  call asyncomplete#force_refresh()
   return "\<C-n>"
