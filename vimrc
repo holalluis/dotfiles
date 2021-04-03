@@ -437,7 +437,7 @@ inoremap <expr><cr>    pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " }}}
 " ============================================================================
-" TABULARIZE PLUGIN and tpope gist
+" TABULARIZE PLUGIN and tpope gist {{{
 " ============================================================================
 " https://gist.github.com/tpope/287147
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
@@ -452,6 +452,7 @@ function! s:align()
   endif
 endfunction
 
+" }}}
 " ============================================================================
 filetype plugin off
 filetype indent off
