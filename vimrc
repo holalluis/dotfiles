@@ -1,4 +1,5 @@
 " vim: set foldmethod=marker foldlevel=99 nomodeline:
+
 " ============================================================================
 " LLUÍS BOSCH'S VIMRC {{{
 " ============================================================================
@@ -9,33 +10,35 @@
 "   alias vimrc='vim ~/dotfiles/vimrc'
 " }}}
 " ============================================================================
+
+" ============================================================================
 " PLUGINS (VIM-PLUG MANAGER) {{{
 " ============================================================================
 call plug#begin('~/.vim/plugged')
   "PROVANT:
-  Plug 'godlygeek/tabular'
-  Plug 'yegappan/taglist'
-  Plug 'vim/killersheep'
+  if !has('nvim')
+    Plug 'vim/killersheep' ":KillKillKill
+  endif
+
+  "Plug 'madox2/vim-ai'
+
+  "TABULARIZE:
+  Plug 'godlygeek/tabular' ":Tabularize
 
   "COLORS:
+  Plug 'itchyny/landscape.vim'
   Plug 'lifepillar/vim-solarized8'
   Plug 'tomasr/molokai'
   Plug 'chriskempson/vim-tomorrow-theme'
   Plug 'junegunn/seoul256.vim'
   Plug 'morhetz/gruvbox'
+  Plug 'ayu-theme/ayu-vim'
+  Plug 'kaicataldo/material.vim', {'branch':'main'}
+  Plug 'mhartington/oceanic-next'
 
   "SYNTAX:
   Plug 'plasticboy/vim-markdown' "good markdown syntax
-
-  "LSP: (language server protocol)
-  "Plug 'prabirshrestha/asyncomplete.vim'
-  "Plug 'prabirshrestha/async.vim'
-  "Plug 'prabirshrestha/vim-lsp'
-  "Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
-  "LANGUAGES LSP:
-  "Plug 'ryanolsonx/vim-lsp-javascript'
-  "Plug 'ryanolsonx/vim-lsp-python'
+  "Plug 'zah/nim.vim'
 
   "STATUS BAR:
   "Plug 'vim-airline/vim-airline'
@@ -99,17 +102,63 @@ call plug#begin('~/.vim/plugged')
 " automatically executes `filetype plugin indent` on and `syntax enable`.
 " Plugins become visible to Vim after this call.
 call plug#end()
+" }}}
+" ============================================================================
+
+" ============================================================================
+" TABS {{{
+" ============================================================================
+" from https://vim.fandom.com/wiki/Show_tab_number_in_your_tab_line
+if exists("+showtabline")
+  function MyTabLine()
+    let s = ''
+    let t = tabpagenr()
+    let i = 1
+    while i <= tabpagenr('$')
+      let buflist = tabpagebuflist(i)
+      let winnr = tabpagewinnr(i)
+      let s .= '%' . i . 'T'
+      let s .= (i == t ? '%1*' : '%2*')
+      "let s .= ' '
+      "let s .= i . ')'
+      let s .= '%*'
+      let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+      let file = bufname(buflist[winnr - 1])
+      let file = fnamemodify(file, ':p:t')
+      if file == ''
+        let file = '[No Name]'
+      endif
+      let s .= ' '.file.' '
+      let i = i + 1
+    endwhile
+    let s .= '%T%#TabLineFill#%='
+    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+    return s
+  endfunction
+  set stal=1
+  set tabline=%!MyTabLine()
+endif
 
 " }}}
 " ============================================================================
+
+" ============================================================================
 " BASIC SETTINGS {{{
 " ============================================================================
+
+"use native omnicompletion plugin
+if has("autocmd") && exists("+omnifunc")
+  autocmd Filetype *
+    \ if &omnifunc == "" |
+    \ setlocal omnifunc=syntaxcomplete#Complete |
+    \ endif
+  endif
 
 "use :Man <program>
 runtime ftplugin/man.vim
 
 "for the :find command
-set path+=**
+"set path+=**
 
 "executar comanda a bash amb la funció '='
 "set equalprg=bash
@@ -125,8 +174,7 @@ function! Executa_linia_actual_a_bash()
   :.!bash
 endfunction
 
-"obrir links sota el cursor
-"test: https://github.com/holalluis
+"obrir links sota el cursor, exemple: https://github.com/holalluis
 nnoremap gx :call HandleURL_for_WSL()<CR>
 function! HandleURL_for_WSL()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;()]*')
@@ -143,16 +191,25 @@ endfunction
 "colors
 "set background=dark
 "colorscheme default
-colorscheme molokai
+"colorscheme molokai
 "colorscheme seoul256
-"colorscheme gruvbox
 "colorscheme Tomorrow-Night
+"colorscheme OceanicNext
+"colorscheme ayu
 "colorscheme solarized8_high
+"colorscheme gruvbox
+"colorscheme material
+colorscheme landscape
 
+"fix black and white colors
+"not sure if this works
 if has('nvim')
   set termguicolors
+  colorscheme default
 else
   set notermguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
 "esborra autocmd anteriors
@@ -162,6 +219,9 @@ autocmd!
 autocmd BufWritePost vimrc source ~/dotfiles/vimrc
 
 "settings
+set lazyredraw
+set showmode                    "show mode (INSERT, VISUAL) etc
+set guicursor=                  "block cursor
 set autoindent                  "set auto indent on
 set autoread                    "autoreload if it has been changed outside vim
 set backspace=indent,eol,start  "backspace normal
@@ -179,7 +239,7 @@ set foldlevel=10                "inicialment folds oberts
 set foldlevelstart=99
 set foldmethod=indent           "manera de plegar text
 set guioptions=                 "no scrollbar in macvim
-set laststatus=2                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
+set laststatus=1                "veure titol finestra (2=sempre, 1=només si n'hi ha més d'una oberta)
 set listchars=eol:$             "makes 'set list' look prettier
 set modeline
 set modelines=5                 "modeline/modelines (:help modeline)
@@ -216,22 +276,21 @@ else
 endif
 
 "DESACTIVATS:
-set nocompatible                "removed in neovim
-set nocursorcolumn              "ilumina columna on hi ha el cursor
-set nocursorline                "ilumina linia on hi ha el cursor
-set nohidden                    "navega per arxius sense haver de guardar canvis
+set nocompatible     "removed in neovim
+set nocursorcolumn   "ilumina columna on hi ha el cursor
+set nocursorline     "ilumina linia on hi ha el cursor
+set nohidden         "navega per arxius sense haver de guardar canvis
 set nohlsearch
 set noignorecase
-set noincsearch                 "incremental search
-set nolazyredraw
-set nolist                      "see invisible characters
-set nopaste                     "prevents insert paste mode (fa coses rares)
-set norelativenumber            "no relative number for line number
-set noruler                     "show position always (no m'agrada)
+set noincsearch      "incremental search
+set nolist           "see invisible characters
+set nopaste          "prevents insert paste mode (fa coses rares)
+set norelativenumber "relative number for line number
+set noruler          "show position always (no m'agrada)
 set nosmartcase
 set nosmartindent
-set nostartofline               "keep the cursor on the same column
-set nowrap                      "les linies que surten de la pantalla no es veuen               asldkfj                                   alsdkfj                         laskdjfklj
+set nostartofline    "keep the cursor on the same column
+set nowrap           "les linies que surten de la pantalla no es veuen               asldkfj                                   alsdkfj                         laskdjfklj
 
 "remember last position opening a file
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
@@ -273,6 +332,9 @@ match ErrorMsg '\s\+$'
 "syntax for groff files
 autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set ft=groff
 
+"syntax for vue files
+autocmd BufRead,BufNewFile *.vue set ft=html
+
 "desactivar auto comments
 autocmd FileType * set formatoptions-=cro
 
@@ -281,12 +343,16 @@ autocmd BufEnter Makefile set noexpandtab
 
 " }}}
 " ============================================================================
+
+" ============================================================================
 " NON-LEADER KEY MAPPINGS {{{
 " ============================================================================
 
 "escape terminal mode
-if !has('nvim')
-  tmap <esc> <c-w>N
+if has('nvim')
+  tnoremap kj <C-\><C-n>
+else
+  tnoremap kj <c-w>N
 endif
 
 "buscar centrant
@@ -298,6 +364,7 @@ cnoremap kj <C-c>
 
 "navegar per les finestres apretant espai
 nnoremap <space> <C-w>w
+nnoremap <C-space> <C-w>W
 
 "make Y behave like other capitals
 nnoremap Y y$
@@ -318,26 +385,33 @@ map Q gq
 " ----------------------------------------------------------------------------
 " Help in new tabs AND "q" for closing help
 " ----------------------------------------------------------------------------
+autocmd BufEnter *.txt call s:helptab()
 function! s:helptab()
   if &buftype == 'help'
     wincmd T
     nnoremap <buffer> q :q<cr>
   endif
 endfunction
-autocmd BufEnter *.txt call s:helptab()
 
 " }}}
-" ----------------------------------------------------------------------------
+" ============================================================================
+
+" ============================================================================
 " LEADER KEY MAPPINGS {{{
 " ----------------------------------------------------------------------------
 let mapleader=','
 
 " NATIVE VIM LEADER MAPPINGS:
-nnoremap <leader>e        :Lexplore<cr>
-nnoremap <leader>m        :make -k -j4<cr><cr>
+nnoremap <leader>a        :@:<cr>
+nnoremap <leader>t        :belowright :vertical :terminal<cr>
+
+nnoremap <leader>ñ        /<C-r>"<cr>
+nnoremap <leader><leader> :e#<cr>
+
+nnoremap <leader>e        :20Lexplore<cr>
+nnoremap <leader>m        :make -k -j4<cr>
 nnoremap <leader>s        :syntax sync fromstart<cr>
 nnoremap <leader>r        :source ~/dotfiles/vimrc<cr>
-nnoremap <leader><leader> :e#<cr>
 
 nnoremap <leader>h        :set ft=html<cr>
 nnoremap <leader>j        :set ft=javascript<cr>
@@ -347,38 +421,58 @@ nnoremap <leader>c        :set ft=css<cr>
 nnoremap <leader>c :CargoRun<cr>
 command! CargoRun :w | :terminal cargo run
 
-"executar arxiu python
+"compilar i executar go project
+nnoremap <leader>g :GoRun<cr>
+command! GoRun :w | :belowright :terminal go run %
+
+"executar arxiu python actual
 nnoremap <leader>p :Python<cr>
-command! Python :w | :belowright :terminal python3 %
+"command! Python :w | :belowright :terminal python3 %
+command! Python :w | :vertical :belowright :terminal /mnt/c/Users/lluis/AppData/Local/Programs/Python/Python310/python.exe %
 
-"executar arxiu javascript
+"executar arxiu javascript actual
 nnoremap <leader>n :Node<cr>
-command! Node :w | :belowright :terminal node %
+command! Node :w | :vertical :belowright :terminal node --no-warnings %
 
-"executar shell script
+"executar shell script actual
 nnoremap <leader>b :Bash<cr>
 command! Bash :w | :terminal bash %
+
+"executar shell script actual
+nnoremap <leader>l :Lisp<cr>
+command! Lisp :w | :terminal clisp --silent %
+
+command! Rscript :w | :terminal Rscript %
 
 "FZF fuzzy file finder (junegunn/fzf)
 nnoremap <leader>f :FZF<cr>
 
-"Taglist plugin (yegappan/taglist)
-nnoremap <leader>t :TlistToggle<cr>
+"open file explorer in Windows WSL
+command! Open :terminal /mnt/c/Windows/explorer.exe \.
+nnoremap <leader>o :Open<cr>
 
 " }}}
+" ============================================================================
+
 " ============================================================================
 " FUNCTIONS AND COMMANDS {{{
 " custom ex commands start with capital letter
 " ----------------------------------------------------------------------------
 command! TrimWhitespace :keeppatterns %s/\s\+$//e
 command! Vimrc          :tabnew ~/dotfiles/vimrc "edit vimrc in a new tab
+command! TmuxConf       :tabnew ~/dotfiles/tmux.conf "edit tmux.conf in a new tab
+command! Bashrc         :tabnew ~/.bash_aliases  "edit bashrc file
+command! TasquesIcra    :tabnew ~/org/icra.md    "edit file in a new tab
+command! Org            :tabnew ~/org/lluis.md   "edit file in a new tab
 command! Vs             :vs | :FZF
 
 "convertir 'WORD' a <inline>'WORD'</inline>
-command! SurroundWordWithInlineHTMLTag normal Bi<inline><esc>Ea</inline><esc>
+command! SurroundWordWithInlineHTMLTag normal Bi<b><esc>Ea</b><esc>
 nnoremap <leader>i :SurroundWordWithInlineHTMLTag<cr>
 
 " }}}
+" ============================================================================
+
 " ============================================================================
 " AUTOCOMPLETE CONFIG {{{
 " ============================================================================
@@ -407,53 +501,17 @@ endfunction
 "3. tecla Enter accepta opcio del pop up menu
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 inoremap <expr><cr>    pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
 " }}}
 " ============================================================================
-" LSP SERVERS LANGUAGES CONFIG {{{
-" ============================================================================
 
-"REGISTER PYTHON LSP: (pyls)
-" pip install python-language-server
-"if executable('pyls')
-"  au User lsp_setup call lsp#register_server({
-"    \ 'name': 'pyls',
-"    \ 'cmd': {server_info->['pyls']},
-"    \ 'whitelist': ['python'],
-"    \ })
-"endif
-
-"REGISTER JAVASCRIPT LSP: (typescript-language-server)
-" npm -g install typescript typescript-language-server
-" perquè funcioni amb javascript és necessari tenir un arxiu "package.json"
-"if executable('typescript-language-server')
-"  au User lsp_setup call lsp#register_server({
-"    \ 'name': 'javascript support using typescript-language-server',
-"    \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-"    \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
-"    \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
-"    \ })
-"endif
-
-" }}}
 " ============================================================================
 " TABULARIZE PLUGIN and tpope gist {{{
 " ============================================================================
 " https://gist.github.com/tpope/287147
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-function! s:align()
-  let p = '^\s*|\s.*\s|\s*$'
-  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-    Tabularize/|/l1
-    normal! 0
-    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-  endif
-endfunction
-
+" it is called when "|" is typed
 " }}}
 " ============================================================================
+
 filetype plugin off
 filetype indent off
 syntax on
